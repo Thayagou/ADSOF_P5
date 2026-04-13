@@ -2,7 +2,6 @@ package dataset;
 
 import features.Featurizer;
 
-// TODO: Auto-generated Javadoc
 /**
  * Tipo: Class Dataset.
  *
