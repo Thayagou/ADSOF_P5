@@ -11,25 +11,25 @@ public class Feature<T extends Comparable<T>> extends ArrayList<T> {
 	
 	private static final long serialVersionUID = 1L;
 
-	/** Campo name. */
-	private String fName;
+	/** Etiqueta del feature (su nombre). */
+	private String tag;
 	
 	/**
 	 * Instancia un nuevo Objeto Feature.
 	 *
 	 * @param fName parámetro fName
 	 */
-	public Feature(String fName) {
-		this.fName = fName;
+	public Feature(String tag) {
+		this.tag = tag;
 	}
 
 	/**
-	 * Obtiene el nombre del feature
+	 * Obtiene el tag del feature
 	 *
-	 * @return nombre del feature
+	 * @return nombre del tag del feature
 	 */
-	public String getfName() {
-		return fName;
+	public String getTag() {
+		return tag;
 	}
 	
 }
