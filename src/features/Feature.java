@@ -1,4 +1,4 @@
-package dataset;
+package features;
 
 public class Feature<T extends Comparable<T>> {
 	private String fName;
