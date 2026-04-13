@@ -1,6 +1,7 @@
 package dataset;
 
-import features.Featurizer;
+import features.*;
+import java.util.*;
 
 /**
  * Tipo: Class Dataset.
@@ -12,6 +13,8 @@ public class Dataset<T>{
 	/** Campo featurizer. */
 	private Featurizer<T> featurizer;
 	
+	/** Campo que almacena los features por su nombre */
+	private Map<String, Feature<?>> features = new HashMap<>();
 	
 	/**
 	 * Instancia un nuevo Objeto Dataset.
