@@ -19,7 +19,6 @@ public class Dataset<T>{
 	/** Colección de objetos que forman el dataset. */
 	private List<T> collection = new ArrayList<T>();
 	
-	
 	/**
 	 * Instancia un nuevo Objeto Dataset.
 	 *
