@@ -14,7 +14,7 @@ public class Dataset<T>{
 	private Featurizer<T> featurizer;
 	
 	/** Features del dataset. */
-	private Map<String, Feature<?>> features = new HashMap<String, Feature<?>>();
+	private Map<String, Feature<?>> features = new LinkedHashMap<String, Feature<?>>();
 	
 	/** Colección de objetos que forman el dataset. */
 	private List<T> collection = new ArrayList<T>();

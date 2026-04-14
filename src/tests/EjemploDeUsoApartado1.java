@@ -22,7 +22,11 @@ public class EjemploDeUsoApartado1 {
 	}
 	
 	public static Dataset<Person> buildDataSet() {
-	Person people [] = { new Person("Pedro", 66, 75, 180, true), new Person("Ana", 47, 54, 158, false), new Person("Luis", 34, 75, 176, true), new Person("Rosa", 47, 54, 158, false)
+	Person people [] = { 
+			new Person("Pedro", 66, 75, 180, true), 
+			new Person("Ana", 47, 54, 158, false),
+			new Person("Luis", 34, 75, 176, true), 
+			new Person("Rosa", 47, 54, 158, false)
 	};
 
 	

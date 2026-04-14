@@ -27,7 +27,7 @@ public class PersonFeaturizer implements Featurizer<Person>{
 		return list;
 	}
 	
-	/**
+ 	/**
 	 * Obtiene el valor de un feature de una persona
 	 * 
 	 * @return Valor del feature especificado

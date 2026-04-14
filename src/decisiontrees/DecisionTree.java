@@ -35,18 +35,29 @@ public class DecisionTree<T>{
 			Node newNode = new Node(name, predicate);
 			children.add(newNode);
 			
+			if (otherwise != null) otherwise.predicate = otherwise.predicate.and(predicate.negate());
+			
 			nodes.put(name, newNode);
 			
-			return newNode;
+			return this;
 		}
 		
 		public Node otherwise(String name) throws DuplicateNodeException {
 			if (nodes.containsKey(name)) throw new DuplicateNodeException(name);
-			otherwise = new Node(name);
+			Predicate<T> otherwisePredicate = p->true;
+			
+			for (Node child: children) {
+				otherwisePredicate.and(child.predicate);
+			}
+			otherwisePredicate = otherwisePredicate.negate();
+			
+			otherwise = new Node(name, otherwisePredicate);
+			
+			children.add(otherwise);
 			
 			nodes.put(name, otherwise);
 			
-			return otherwise;
+			return this;
 		}
 		
 		public boolean test(T value) {
@@ -61,6 +72,7 @@ public class DecisionTree<T>{
 			if (isLeafNode()) return this;
 			
 			for (Node n: children) {
+				//System.out.println("Prueba: " + n.name + "\n");
 				if (n.test(value)) return n;
 			}
 			
@@ -68,46 +80,54 @@ public class DecisionTree<T>{
 			
 			throw new StagnantValueException(value);
 		}
+		
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append("Name: " + name + "\n");
+			
+			if (isLeafNode()) {
+				sb.append("Leaf node\n");
+				sb.append("\n\n");
+			} else {
+				sb.append("Children: \n");
+				for (Node child: children) {
+					sb.append(child.name + " ");
+				}
+				
+				if (otherwise != null) sb.append("\nOtherwise: " + otherwise.name + "\n");
+				sb.append("\n\n");
+				
+				for (Node child: children) {
+					sb.append(child.toString());
+				}
+			}
+			
+			return sb.toString();
+		}
 	}
 	
 	public Node node(String nodeName) throws NodeNotFoundException {
 		if (nodes.containsKey(nodeName)) return nodes.get(nodeName);
 		if (!nodes.isEmpty()) throw new NodeNotFoundException(nodeName);
 		
-		root = new Node(nodeName);
+		root = new Node(nodeName, p->true);
 		nodes.put(nodeName, root);
 		
 		return root;
 	}
 	
-	/* Si no se puede guardar en Map
-	public Node node(String nodeName) throws NodeNotFoundException {
-		Stack<Node> dfs = new Stack<>();
-		
-		if (root == null) throw new NodeNotFoundException(nodeName);
-		dfs.add(root);
-		
-		while (dfs.isEmpty() == false) {
-			Node explore = dfs.pop();
-			if (explore.name.equals(nodeName)) return explore;
-			
-			for (Node n: explore.children) {
-				dfs.add(n);
-			}
-		}
-		
-		throw new NodeNotFoundException(nodeName);
-	}*/
-	
 	public Map<String, List<T>> predict (List<T> values) {
-		Node curr = root, next = null;
-		Map<String, List<T>> endValues = new HashMap<>();
+		Node curr, next = null;
+		Map<String, List<T>> endValues = new LinkedHashMap<>();
 		
 		for (T value: values) {
-			
+			next = root;
 			do {
+				curr = next;
 				try {
 					next = curr.nextPredict(value);
+					//System.out.println(next.name + " " + curr.name + "\n");
 				} catch (StagnantValueException e) {
 					System.out.println(e);
 					break;
@@ -125,7 +145,54 @@ public class DecisionTree<T>{
 		return predict(dataset.getValues());
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Map<String, List<T>> predict (T...values) {
 		return predict(List.of(values));
+	}
+	
+	
+	public Predicate<T> getPredicate(String nodeName) throws NodeNotFoundException {
+		Stack<Node> st = new Stack<>();
+		List<Node> camino = new ArrayList<>();
+		
+		if (root == null) throw new NodeNotFoundException(nodeName);
+		if (nodes.containsKey(nodeName) == false) throw new NodeNotFoundException(nodeName);
+		
+		st.add(root);
+		if (dfsRec(nodeName, st, camino) == false) throw new NodeNotFoundException(nodeName);
+		System.out.println(camino.stream().map(p->p.name).toList());
+		Predicate<T> result = p->true;
+		for (Node node: camino) {
+			result = result.and(node.predicate);
+		}
+		
+		return result;
+	}
+	
+	private boolean dfsRec(String nodeName, Stack<Node> st, List<Node> camino) {
+		boolean found = false;
+		
+		while ((found == false) && (st.isEmpty() == false)) {
+			Node explore = st.pop();
+			camino.add(explore);	
+			
+			if (explore.name.equals(nodeName)) {
+				return true;
+			}
+			
+			for (Node child: explore.children) {
+				st.add(child);
+				if (dfsRec(nodeName, st, camino) == true) return true;
+			}
+			
+			camino.remove(explore);
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public String toString() {
+		return root.toString();
 	}
 }

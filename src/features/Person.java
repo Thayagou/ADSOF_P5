@@ -34,6 +34,7 @@ public class Person {
 		this.age = age;
 		this.weight = weight;
 		this.height = height;
+		this.male = male;
 	}
 
 	/**
@@ -79,6 +80,11 @@ public class Person {
 	 */
 	public boolean isMale() {
 		return male;
+	}
+	
+	@Override
+	public String toString() {
+		return name + " " + age + " " + " " + weight + " " + height;
 	}
 	
 	
