@@ -44,6 +44,15 @@ public class Dataset<T>{
 	}
 	
 	/**
+	 * Añade todos los valores de un array de nuevos elementos
+	 *
+	 * @param elems Elementos a añadir
+	 */
+	public void addAll(T...elems) {
+		for (T elem: elems) add(elem);
+	}
+	
+	/**
 	 * Obtiene el feature con el tag especificado si existe.
 	 *
 	 * @param tag parámetro tag
@@ -51,5 +60,14 @@ public class Dataset<T>{
 	 */
 	public Feature<?> feature(String tag) {
 		return features.get(tag);
+	}
+	
+	/**
+	 * Obtiene los valores almacenados en el DataSet
+	 * 
+	 * @return lista de valores
+	 */
+	public List<T> getValues() {
+		return Collections.unmodifiableList(collection);
 	}
 }

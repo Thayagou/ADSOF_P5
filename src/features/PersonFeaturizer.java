@@ -34,6 +34,7 @@ public class PersonFeaturizer implements Featurizer<Person>{
 	 */
 	@Override
 	public Object getValue(Person elem, String featureTag) {
+
 		switch(featureTag) {
 		case NAME_ST_TAG:
 			return elem.getName();
