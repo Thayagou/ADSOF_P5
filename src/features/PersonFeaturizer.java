@@ -21,7 +21,7 @@ public class PersonFeaturizer implements Featurizer<Person>{
 	public List<Feature<?>> getFeatureList() {
 		List<Feature<?>> list = new ArrayList<Feature<?>>();
 		list.add(new Feature<String>(NAME_ST_TAG));
-		list.add(new Feature<Double>(AGE_ST_TAG));
+		list.add(new Feature<Integer>(AGE_ST_TAG));
 		list.add(new Feature<Double>(HEIGHT_ST_TAG));
 		list.add(new Feature<Double>(WEIGHT_ST_TAG));
 		return list;

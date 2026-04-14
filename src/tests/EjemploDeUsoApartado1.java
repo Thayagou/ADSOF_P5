@@ -10,15 +10,15 @@ import features.PersonFeaturizer;
 public class EjemploDeUsoApartado1 {
 	public static void main(String[] args) {
 		Dataset<Person> dataSet = buildDataSet(); System.out.println("dataset: "+dataSet);
-		/*dataSet.removeDuplicates();
-		System.out.println("dataset w/o duplicates: "+dataSet);*/
+		//dataSet.removeDuplicates();
+		//System.out.println("dataset w/o duplicates: "+dataSet);
 		Feature<Integer> ages = (Feature<Integer>) dataSet.feature("age");
 		System.out.println("Ages: "+ages);
 		
 		Collections.sort(ages);
-		/*
+		
 		System.out.println("Ages sorted: "+ages); System.out.println("Min age: "+ages.min());
-		System.out.println("Gender distribution: "+dataSet.feature ("gender").distribution());*/
+		System.out.println("Gender distribution: "+dataSet.feature("gender").distribution());
 	}
 	
 	public static Dataset<Person> buildDataSet() {

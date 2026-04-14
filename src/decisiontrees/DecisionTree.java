@@ -19,6 +19,8 @@ public class DecisionTree<T>{
 		private List<Node> children = new ArrayList<>();
 		private Node otherwise;
 		
+		private Predicate<T> DF_TRUE_STATENMENT = p->true;
+		
 		private Node (String name, Predicate<T> predicate) {
 			this.name = name;
 			this.predicate = predicate;
