@@ -1,5 +1,5 @@
 package labels;
 
-public interface LabelProvider<T, L extends Label> {
+public interface LabelProvider<T, L> {
 	public L getLabel(T elem);
 }
