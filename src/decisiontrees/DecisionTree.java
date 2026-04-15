@@ -33,6 +33,7 @@ public class DecisionTree<T>{
 		
 		public Node withCondition(String name, Predicate<T> predicate) throws DuplicateNodeException {
 			if (nodes.containsKey(name)) throw new DuplicateNodeException(name);
+			Predicate<T> pred = new P
 			
 			Node newNode = new Node(name, predicate);
 			children.add(newNode);
