@@ -49,9 +49,8 @@ public class DecisionTree<T>{
 			Predicate<T> otherwisePredicate = p->true;
 			
 			for (Node child: children) {
-				otherwisePredicate.and(child.predicate);
+				otherwisePredicate.and(child.predicate.negate());
 			}
-			otherwisePredicate = otherwisePredicate.negate();
 			
 			otherwise = new Node(name, otherwisePredicate);
 			
