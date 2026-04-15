@@ -11,7 +11,6 @@ import java.util.*;
 
 public class DecisionTree<T>{
 	private Node root;
-	private Map<String, Node> nodes = new HashMap<>();
 	
 	public class Node {
 		private String name;
@@ -31,22 +30,16 @@ public class DecisionTree<T>{
 			this.predicate = null;
 		}
 		
-		public Node withCondition(String name, Predicate<T> predicate) throws DuplicateNodeException {
-			if (nodes.containsKey(name)) throw new DuplicateNodeException(name);
-			Predicate<T> pred = new P
-			
+		public Node withCondition(String name, Predicate<T> predicate) {			
 			Node newNode = new Node(name, predicate);
 			children.add(newNode);
 			
 			if (otherwise != null) otherwise.predicate = otherwise.predicate.and(predicate.negate());
 			
-			nodes.put(name, newNode);
-			
 			return this;
 		}
 		
-		public Node otherwise(String name) throws DuplicateNodeException {
-			if (nodes.containsKey(name)) throw new DuplicateNodeException(name);
+		public Node otherwise(String name) {
 			Predicate<T> otherwisePredicate = p->true;
 			
 			for (Node child: children) {
@@ -56,8 +49,6 @@ public class DecisionTree<T>{
 			otherwise = new Node(name, otherwisePredicate);
 			
 			children.add(otherwise);
-			
-			nodes.put(name, otherwise);
 			
 			return this;
 		}
@@ -110,13 +101,12 @@ public class DecisionTree<T>{
 	}
 	
 	public Node node(String nodeName) throws NodeNotFoundException {
-		if (nodes.containsKey(nodeName)) return nodes.get(nodeName);
-		if (!nodes.isEmpty()) throw new NodeNotFoundException(nodeName);
+		if (root == null) {
+			root = new Node(nodeName, p->true);
+			return root;
+		}
 		
-		root = new Node(nodeName, p->true);
-		nodes.put(nodeName, root);
-		
-		return root;
+		return getNode(nodeName);
 	}
 	
 	public Map<String, List<T>> predict (List<T> values) {
@@ -158,7 +148,6 @@ public class DecisionTree<T>{
 		List<Node> camino = new ArrayList<>();
 		
 		if (root == null) throw new NodeNotFoundException(nodeName);
-		if (nodes.containsKey(nodeName) == false) throw new NodeNotFoundException(nodeName);
 		
 		st.add(root);
 		if (dfsRec(nodeName, st, camino) == false) throw new NodeNotFoundException(nodeName);
@@ -191,6 +180,23 @@ public class DecisionTree<T>{
 		}
 		
 		return false;
+	}
+	
+	private Node getNode(String nodeName) throws NodeNotFoundException {
+		Stack<Node> st = new Stack<>();
+		
+		st.add(root);
+		
+		while (!st.isEmpty()) {
+			Node cur = st.pop();
+			if (cur.name.equals(nodeName)) return cur;
+			
+			for (Node child: cur.children) {
+				st.add(child);
+			}
+		}
+		
+		throw new NodeNotFoundException(nodeName);
 	}
 	
 	@Override

@@ -1,12 +1,14 @@
 package decisiontrees;
 
 import java.util.function.Predicate;
+import java.util.*;
 
 import dataset.*;
 import features.*;
 import labels.*;
 
 public class GreedyTreeLearner<T extends Comparable<T>, L> {
+	private 
 	/*public DecisionTree<String> learn(LabeledDataset<T, L> dataset, Feature<?>...availableFeatures){
 		boolean allLabelsEqual = true;
 		if(!dataset.getLabels().isEmpty()) {
@@ -24,6 +26,10 @@ public class GreedyTreeLearner<T extends Comparable<T>, L> {
 		if(allLabelsEqual) return new Node(dataset.getLabels().get(0).getName());
 		
 	}*/
+	
+	public DecisionTree<T> learn(LabeledDataset<T, L> dataset) {
+		List<Feature<?>> table = dataset.getTable();
+	}
 	
 	private Predicate<T> inRange(T min, T max) {
 		return n-> (n.compareTo(min) >= 0 && n.compareTo(max) < 0);

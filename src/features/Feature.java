@@ -67,4 +67,16 @@ public class Feature<T extends Comparable<T>> extends ArrayList<T> {
 		return dist;
 	}
 	
+	public TreeMap<T, List<Integer>> distributionPositions() {
+		TreeMap<T, List<Integer>> dist = new TreeMap<>();
+		
+		int size = this.size();
+		
+		for (int i = 0; i < size; i++) {
+			dist.computeIfAbsent(get(i), t->new ArrayList<>()).add(i);
+		}
+		
+		return dist;
+	}
+	
 }

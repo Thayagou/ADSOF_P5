@@ -10,6 +10,7 @@ public class LabeledDataset<T, L> extends Dataset<T> {
 
 	public LabeledDataset(Featurizer<T> featurizer, LabelProvider<T, L> labelProvider) {
 		super(featurizer);
+
 		this.labelProvider = labelProvider;
 	}
 

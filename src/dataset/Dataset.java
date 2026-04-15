@@ -2,6 +2,7 @@ package dataset;
 
 import features.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Tipo: Class Dataset.
@@ -11,13 +12,13 @@ import java.util.*;
 public class Dataset<T>{
 	
 	/** Campo featurizer. */
-	private Featurizer<T> featurizer;
+	protected Featurizer<T> featurizer;
 	
 	/** Features del dataset. */
-	private Map<String, Feature<?>> features = new LinkedHashMap<String, Feature<?>>();
+	protected LinkedHashMap<String, Feature<?>> features = new LinkedHashMap<String, Feature<?>>();
 	
 	/** Colección de objetos que forman el dataset. */
-	private List<T> collection = new ArrayList<T>();
+	protected List<T> collection = new ArrayList<T>();
 	
 	/**
 	 * Instancia un nuevo Objeto Dataset.
@@ -52,6 +53,38 @@ public class Dataset<T>{
 		for (T elem: elems) add(elem);
 	}
 	
+	public void removeDuplicates() {
+		List<T> noDuplicates = collection.stream().distinct().collect(Collectors.toList());
+		features = new LinkedHashMap<String, Feature<?>>();
+		
+		for(Feature<?> f : featurizer.getFeatureList()) {
+			this.features.put(f.getTag(), f);
+		}
+		
+		
+		
+		
+		
+	}
+	
+	private void removeLine(int line) {
+		for (Feature<?> col: features.values()) {
+			col.remove(line);
+		}
+	}
+	
+	private boolean equalLine(int i, int j) {
+		for (Feature<?> col: features.values()) {
+			if (compFeature(col, i, j) != 0) return false;
+		}
+		
+		return true;
+	}
+	
+	private <F extends Comparable<F>> int compFeature(Feature<F> col, int i, int j) {
+		return col.get(i).compareTo(col.get(j));
+	}
+	
 	/**
 	 * Obtiene el feature con el tag especificado si existe.
 	 *
@@ -69,5 +102,9 @@ public class Dataset<T>{
 	 */
 	public List<T> getValues() {
 		return Collections.unmodifiableList(collection);
+	}
+	
+	public List<Feature<?>> getTable() {
+		return new ArrayList<>(features.values());
 	}
 }
