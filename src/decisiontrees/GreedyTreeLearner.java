@@ -33,7 +33,11 @@ public class GreedyTreeLearner<T extends Comparable<T>, L> {
 		
 		TreeMap<?, List<Integer>> dist = best.distributionPositions();
 		
-		for (: dist) {
+		features.remove(best);
+		
+		for (Map.Entry<?, List<Integer>> entry: dist.entrySet()) {
+			List<Feature<?>> subTree = new ArrayList<>(features);
+			
 			
 		}
 	}
