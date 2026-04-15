@@ -10,99 +10,11 @@ import exceptions.StagnantValueException;
 import java.util.*;
 
 public class DecisionTree<T>{
-	private Node root;
+	private Node<T> root;
 	
-	public class Node {
-		private String name;
-		private Predicate<T> predicate;
-		private List<Node> children = new ArrayList<>();
-		private Node otherwise;
-		
-		private Predicate<T> DF_TRUE_STATENMENT = p->true;
-		
-		private Node (String name, Predicate<T> predicate) {
-			this.name = name;
-			this.predicate = predicate;
-		}
-		
-		private Node (String name) {
-			this.name = name;
-			this.predicate = null;
-		}
-		
-		public Node withCondition(String name, Predicate<T> predicate) {			
-			Node newNode = new Node(name, predicate);
-			children.add(newNode);
-			
-			if (otherwise != null) otherwise.predicate = otherwise.predicate.and(predicate.negate());
-			
-			return this;
-		}
-		
-		public Node otherwise(String name) {
-			Predicate<T> otherwisePredicate = p->true;
-			
-			for (Node child: children) {
-				otherwisePredicate.and(child.predicate.negate());
-			}
-			
-			otherwise = new Node(name, otherwisePredicate);
-			
-			children.add(otherwise);
-			
-			return this;
-		}
-		
-		public boolean test(T value) {
-			return predicate.test(value);
-		}
-		
-		public boolean isLeafNode() {
-			return (children.isEmpty() && (otherwise == null));
-		}
-		
-		public Node nextPredict (T value) throws StagnantValueException {
-			if (isLeafNode()) return this;
-			
-			for (Node n: children) {
-				//System.out.println("Prueba: " + n.name + "\n");
-				if (n.test(value)) return n;
-			}
-			
-			if (otherwise != null) return otherwise;
-			
-			throw new StagnantValueException(value);
-		}
-		
-		@Override
-		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			sb.append("Name: " + name + "\n");
-			
-			if (isLeafNode()) {
-				sb.append("Leaf node\n");
-				sb.append("\n\n");
-			} else {
-				sb.append("Children: \n");
-				for (Node child: children) {
-					sb.append(child.name + " ");
-				}
-				
-				if (otherwise != null) sb.append("\nOtherwise: " + otherwise.name + "\n");
-				sb.append("\n\n");
-				
-				for (Node child: children) {
-					sb.append(child.toString());
-				}
-			}
-			
-			return sb.toString();
-		}
-	}
-	
-	public Node node(String nodeName) throws NodeNotFoundException {
+	public Node<T> node(String nodeName) throws NodeNotFoundException {
 		if (root == null) {
-			root = new Node(nodeName, p->true);
+			root = new Node<>(nodeName, p->true);
 			return root;
 		}
 		
@@ -110,7 +22,7 @@ public class DecisionTree<T>{
 	}
 	
 	public Map<String, List<T>> predict (List<T> values) {
-		Node curr, next = null;
+		Node<T> curr, next = null;
 		Map<String, List<T>> endValues = new LinkedHashMap<>();
 		
 		for (T value: values) {
@@ -127,7 +39,7 @@ public class DecisionTree<T>{
 				
 			} while (!curr.equals(next));
 			
-			endValues.computeIfAbsent(curr.name, k-> new ArrayList<T>()).add(value);
+			endValues.computeIfAbsent(curr.getName(), k-> new ArrayList<T>()).add(value);
 		}
 		
 		return endValues;
@@ -144,34 +56,33 @@ public class DecisionTree<T>{
 	
 	
 	public Predicate<T> getPredicate(String nodeName) throws NodeNotFoundException {
-		Stack<Node> st = new Stack<>();
-		List<Node> camino = new ArrayList<>();
+		Stack<Node<T>> st = new Stack<>();
+		List<Node<T>> camino = new ArrayList<>();
 		
 		if (root == null) throw new NodeNotFoundException(nodeName);
 		
 		st.add(root);
 		if (dfsRec(nodeName, st, camino) == false) throw new NodeNotFoundException(nodeName);
-		System.out.println(camino.stream().map(p->p.name).toList());
 		Predicate<T> result = p->true;
-		for (Node node: camino) {
-			result = result.and(node.predicate);
+		for (Node<T> node: camino) {
+			result = result.and(node.getPredicate());
 		}
 		
 		return result;
 	}
 	
-	private boolean dfsRec(String nodeName, Stack<Node> st, List<Node> camino) {
+	private boolean dfsRec(String nodeName, Stack<Node<T>> st, List<Node<T>> camino) {
 		boolean found = false;
 		
 		while ((found == false) && (st.isEmpty() == false)) {
-			Node explore = st.pop();
+			Node<T> explore = st.pop();
 			camino.add(explore);	
 			
-			if (explore.name.equals(nodeName)) {
+			if (explore.getName().equals(nodeName)) {
 				return true;
 			}
 			
-			for (Node child: explore.children) {
+			for (Node<T> child: explore.getChildren()) {
 				st.add(child);
 				if (dfsRec(nodeName, st, camino) == true) return true;
 			}
@@ -182,16 +93,16 @@ public class DecisionTree<T>{
 		return false;
 	}
 	
-	private Node getNode(String nodeName) throws NodeNotFoundException {
-		Stack<Node> st = new Stack<>();
+	private Node<T> getNode(String nodeName) throws NodeNotFoundException {
+		Stack<Node<T>> st = new Stack<>();
 		
 		st.add(root);
 		
 		while (!st.isEmpty()) {
-			Node cur = st.pop();
-			if (cur.name.equals(nodeName)) return cur;
+			Node<T> cur = st.pop();
+			if (cur.getName().equals(nodeName)) return cur;
 			
-			for (Node child: cur.children) {
+			for (Node<T> child: cur.getChildren()) {
 				st.add(child);
 			}
 		}

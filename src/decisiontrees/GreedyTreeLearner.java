@@ -6,9 +6,10 @@ import java.util.*;
 import dataset.*;
 import features.*;
 import labels.*;
+import strategies.Strategy;
 
 public class GreedyTreeLearner<T extends Comparable<T>, L> {
-	private 
+	private Strategy strategy;
 	/*public DecisionTree<String> learn(LabeledDataset<T, L> dataset, Feature<?>...availableFeatures){
 		boolean allLabelsEqual = true;
 		if(!dataset.getLabels().isEmpty()) {
@@ -27,8 +28,20 @@ public class GreedyTreeLearner<T extends Comparable<T>, L> {
 		
 	}*/
 	
+	public Node<T> learnRec(List<Feature<?>> table, List<Feature<?>> features) {
+		Feature<?> best = strategy.getBestFeature(features);
+		
+		TreeMap<?, List<Integer>> dist = best.distributionPositions();
+		
+		for (: dist) {
+			
+		}
+	}
+	
 	public DecisionTree<T> learn(LabeledDataset<T, L> dataset) {
 		List<Feature<?>> table = dataset.getTable();
+		
+		
 	}
 	
 	private Predicate<T> inRange(T min, T max) {
