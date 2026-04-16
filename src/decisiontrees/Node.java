@@ -36,7 +36,7 @@ public class Node<T> {
 		
 		children.add(child);
 		
-		return child;
+		return this;
 	}
 	
 	/**

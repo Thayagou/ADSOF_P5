@@ -32,18 +32,19 @@ public class PersonFeaturizer implements Featurizer<Person>{
 	 * 
 	 * @return Valor del feature especificado
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object getValue(Person elem, String featureTag) {
+	public <V extends Comparable<V>> V getValue(Person elem, String featureTag) {
 
 		switch(featureTag) {
 		case NAME_ST_TAG:
-			return elem.getName();
+			return (V) elem.getName();
 		case AGE_ST_TAG:
-			return elem.getAge();
+			return (V) (Integer) elem.getAge();
 		case HEIGHT_ST_TAG:
-			return elem.getHeight();
+			return (V) (Double) elem.getHeight();
 		case WEIGHT_ST_TAG:
-			return elem.getWeight();
+			return (V) (Double) elem.getWeight();
 		default:
 			return null;
 		}

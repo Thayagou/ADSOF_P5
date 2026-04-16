@@ -12,6 +12,14 @@ import java.util.*;
 public class DecisionTree<T>{
 	private Node<T> root;
 	
+	public DecisionTree(String rootName) {
+		root = new Node<>(rootName, p->true);
+	}
+	
+	public Node<T> getRoot() {
+		return root;
+	}
+	
 	public Node<T> node(String nodeName) throws NodeNotFoundException {
 		if (root == null) {
 			root = new Node<>(nodeName, p->true);

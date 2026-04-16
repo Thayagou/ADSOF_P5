@@ -4,8 +4,8 @@ import java.util.function.Predicate;
 import java.util.*;
 
 import dataset.*;
+import exceptions.NodeNotFoundException;
 import features.*;
-import labels.*;
 import strategies.Strategy;
 
 public class GreedyTreeLearner<T extends Comparable<T>, L> {
@@ -33,56 +33,47 @@ public class GreedyTreeLearner<T extends Comparable<T>, L> {
 		
 		// Elegir mejor feature
 		String tagBestFeature = strategy.getBestFeature(dataset);
-		@SuppressWarnings("unchecked")
 		Feature<K> bestFeature = (Feature<K>) dataset.removeFeature(tagBestFeature);
 		
 		
         TreeMap<K, List<Integer>> dist = bestFeature.distributionPositions();
         
-        K lowerBound = null, higherBound, curKey;
         Featurizer<T> featurizer = dataset.getFeaturizer();
-		for(Map.Entry<K, List<Integer>> entry : dist.entrySet()) {
-			curKey = entry.getKey();
-			dist.higherKey(curKey);
-			LabeledDataset<T, L> subDataset = dataset.getLabeledSubset(entry.getValue());
+		for(K key : dist.keySet()) {
+			LabeledDataset<T, L> subDataset = dataset.getLabeledSubset(dist.get(key));
 
-			Predicate<T> childPredicate;
+			Predicate<T> childPredicate = null;
 			Node<T> child = null;
 			
 			/* Si el valor es el mayor se le asigna un otherwise para evitar stagnant values
-			 * Si es un valor intermedio, le asigna el intervalo lowerBound - curKey
-			 * Si es el menor se le asigna el rango menor que
+			 * Si es un valor intermedio, le asigna el intervalo (lowerBound - curKey]
+			 * Si es el menor se le asigna el rango menor que (-inf - curkey]
 			 */
-			if (dist.higherKey(curKey) == null) {
+			if (dist.higherKey(key) == null) {
 				child = currNode.otherwise(subDataset.toString());
-			} else if (lowerBound == null) {
-				childPredicate = p-> ((K) featurizer.getValue(p, tagBestFeature)).compareTo(curKey) < 0 ;
+			} else if ( dist.lowerKey(key) == null) {
+				childPredicate = p-> ((K) featurizer.getValue(p, tagBestFeature)).compareTo(key) < 0 ;
 			} else {
-				childPredicate = p-> ((K) featurizer.getValue(p, tagBestFeature)).compareTo(curKey) <= 0 
+				K lowerBound = dist.lowerKey(key);
+				childPredicate = p-> ((K) featurizer.getValue(p, tagBestFeature)).compareTo(key) <= 0 
 						&& ((K) featurizer.getValue(p, tagBestFeature)).compareTo(lowerBound) > 0;
 			}
 			
-			if (child == null) child = new Node<>(tagBestFeature + curKey.toString(), childPredicate);
-			
-			
-			 
-			currNode.addChild(child);
+			if (child == null) {
+				child = new Node<>(tagBestFeature + key.toString(), childPredicate);
+				currNode.addChild(child);
+			}
 			
 			learnRec(subDataset, child);
-			
-			lowerBound = curkey;
 		}
 	}
 
-	public DecisionTree<T> learn(LabeledDataset<T, L> dataset) {
-		DecisionTree<T> dTree = new DecisionTree<>();
-		List<Feature<?>> table = dataset.getTable();
+	public DecisionTree<T> learn(LabeledDataset<T, L> dataset) throws NodeNotFoundException {
+		DecisionTree<T> dTree = new DecisionTree<>("root");
+		
+		learnRec(new LabeledDataset<T, L>(dataset), dTree.getRoot());
 
 
 		return dTree;
-	}
-
-	private Predicate<T> inRange(T min, T max) {
-		return n -> (n.compareTo(min) >= 0 && n.compareTo(max) < 0);
 	}
 }

@@ -22,7 +22,7 @@ public class EjemploDeUsoApartado2 {
 	}
 	
 	public static DecisionTree<Person> buildPersonDecisionTree() throws DuplicateNodeException, NodeNotFoundException {
-		DecisionTree<Person> dt = new DecisionTree<>();
+		DecisionTree<Person> dt = new DecisionTree<>("root");
 		
 		dt.node("root") // nodo raíz, al ser el primero que se añade
 		.withCondition ("male", p -> p.isMale())
