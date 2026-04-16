@@ -20,6 +20,22 @@ public class LabeledDataset<T, L> extends Dataset<T> {
 		this.labelProvider = labeledDataset.labelProvider;
 		this.labels.addAll(labeledDataset.labels);
 	}
+	
+	/**
+	 * Devuelve un subset del LabeledDataset a partir de una lista de indices
+	 *
+	 * @param index Lista con los indices de los elementos que se incluiran
+	 * @return Nuevo dataset con los elementos que se indicaron
+	 */
+	public LabeledDataset<T, L> getLabeledSubset(List<Integer> index){
+		LabeledDataset<T, L> dataset = new LabeledDataset<T, L>(featurizer, labelProvider);
+		
+		for(Integer i : index) {
+			dataset.add(collection.get(i));
+		}
+		
+		return dataset;
+	}
 
 	@Override
 	public void add(T elem) {

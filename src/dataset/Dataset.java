@@ -45,6 +45,22 @@ public class Dataset<T>{
 	}
 	
 	/**
+	 * Devuelve un subset del dataset a partir de una lista de indices
+	 *
+	 * @param index Lista con los indices de los elementos que se incluiran
+	 * @return Nuevo dataset con los elementos que se indicaron
+	 */
+	public Dataset<T> getSubset(List<Integer> index){
+		Dataset<T> dataset = new Dataset<T>(featurizer);
+		
+		for(Integer i : index) {
+			dataset.add(collection.get(i));
+		}
+		
+		return dataset;
+	}
+	
+	/**
 	 * Añade los valores de un nuevo elemento
 	 *
 	 * @param elem Elemento a añadir

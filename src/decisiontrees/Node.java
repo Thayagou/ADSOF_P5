@@ -24,6 +24,24 @@ public class Node<T> {
 		this.predicate = null;
 	}
 	
+	/**
+	 * Añade un nodo como hijo
+	 * TODO
+	 *
+	 * @param child
+	 */
+	public void addChild(Node<T> child) {
+		this.withCondition(child.name, child.predicate);
+	}
+	
+	/**
+	 * Añade un hijo al nodo con el nombre y la condicion especificados
+	 * TODO
+	 *
+	 * @param name
+	 * @param predicate
+	 * @return
+	 */
 	public Node<T> withCondition(String name, Predicate<T> predicate) {			
 		Node<T> newNode = new Node<>(name, predicate);
 		children.add(newNode);
@@ -33,6 +51,13 @@ public class Node<T> {
 		return this;
 	}
 	
+	/**
+	 * Añade el nodo otherwise a este nodo
+	 * TODO
+	 *
+	 * @param name
+	 * @return
+	 */
 	public Node<T> otherwise(String name) {
 		Predicate<T> otherwisePredicate = p->true;
 		
@@ -47,6 +72,13 @@ public class Node<T> {
 		return this;
 	}
 	
+	/**
+	 * Devuelve el valor del predicado del nodo para cierto valor de entrada
+	 * TODO
+	 *
+	 * @param value
+	 * @return
+	 */
 	public boolean test(T value) {
 		return predicate.test(value);
 	}
@@ -55,6 +87,14 @@ public class Node<T> {
 		return (children.isEmpty() && (otherwise == null));
 	}
 	
+	/**
+	 * Devuelve el primer nodo hijo que cumple su predicado para el valor
+	 * TODO
+	 *
+	 * @param value
+	 * @return
+	 * @throws StagnantValueException
+	 */
 	public Node<T> nextPredict (T value) throws StagnantValueException {
 		if (isLeafNode()) return this;
 		
