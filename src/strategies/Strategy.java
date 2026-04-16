@@ -1,8 +1,8 @@
 package strategies;
 
 import features.*;
-import java.util.*;
+import dataset.*;
 
 public interface Strategy {
-	Feature<?> getBestFeature(List<Feature<?>> features);
+	Feature<?> getBestFeature(LabeledDataset<?,?> dataset);	
 }
