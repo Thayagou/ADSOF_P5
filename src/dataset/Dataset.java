@@ -60,6 +60,18 @@ public class Dataset<T>{
 		return dataset;
 	}
 	
+	/*@SuppressWarnings("unchecked")
+	public <K extends Comparable<K>> TreeMap<K, Dataset<T>> splitDataset(String tag) {
+		Feature<K> splitFeat = (Feature<K>) removeFeature(tag);
+		
+		TreeMap<K, List<Integer>> positions = splitFeat.distributionPositions();
+		
+		TreeMap<K, Dataset<T>> splitDataset = new TreeMap<>();
+		for (Map.Entry<K, List<Integer>> entry: positions.entrySet()) {
+			
+		}
+	}*/
+	
 	/**
 	 * Añade los valores de un nuevo elemento
 	 *

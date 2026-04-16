@@ -23,7 +23,7 @@ public class GreedyTreeLearner<T extends Comparable<T>, L> {
 	 */
 
 	// @SuppressWarnings("unchecked")
-	public Node<T> learnRec(Node<T> parentNode, LabeledDataset<T, L> dataset, List<Feature<?>> availableFeatures) {
+	public <K extends Comparable<K>> Node<T> learnRec(LabeledDataset<T, L> dataset, Node<T> currNode) {
 		//Misma etiqueta en todos
 		List<L> labels = dataset.getLabels();
 		if (labels.stream().distinct().count() == 1) {
@@ -31,15 +31,17 @@ public class GreedyTreeLearner<T extends Comparable<T>, L> {
 		}
 		
 		// Elegir mejor feature
-		Feature<?> bestFeature = strategy.getBestFeature(dataset);
-		List<Feature<?>> remaining = new ArrayList<>(availableFeatures);
-        remaining.remove(bestFeature);
+		String tagBestFeature = strategy.getBestFeature(dataset);
+		@SuppressWarnings("unchecked")
+		Feature<K> bestFeature = (Feature<K>) dataset.removeFeature(tagBestFeature);
 		
-        TreeMap<?, List<Integer>> dist = bestFeature.distributionPositions();
+		
+        TreeMap<K, List<Integer>> dist = bestFeature.distributionPositions();
         
-		for(List<Integer> value : dist.values()) {
-			LabeledDataset<T, L> subset = dataset.getLabeledSubset(value);
-			parentNode.addChild(learnRec());
+		for(Map.Entry<K, List<Integer>> entry : dist.entrySet()) {
+			LabeledDataset<T, L> subDataset = dataset.getLabeledSubset(entry.getValue());
+
+			Node<T> child = new Node<>(tagBestFeature + entry.getKey().toString(), p-> p.compareTo(entry.getKey()) == 0);
 		}
 		
 //		Feature<?> best = strategy.getBestFeature(features);
@@ -59,7 +61,6 @@ public class GreedyTreeLearner<T extends Comparable<T>, L> {
 		DecisionTree<T> dTree = new DecisionTree<>();
 		List<Feature<?>> table = dataset.getTable();
 
-		learnRec();
 
 		return dTree;
 	}

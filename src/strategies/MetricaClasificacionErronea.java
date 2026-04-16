@@ -7,10 +7,9 @@ import java.util.*;
 public class MetricaClasificacionErronea implements Strategy {
 
 	@Override
-	public <T, L> Feature<?> getBestFeature(LabeledDataset<T, L> dataset) {
+	public <T, L> String getBestFeature(LabeledDataset<T, L> dataset) {
 		List<Feature<?>> features = dataset.getTable();
-		
-		List<T> values = dataset.getValues();
+	
 		List<L> labels = dataset.getLabels();
 		
 		int minMismatch = Integer.MAX_VALUE;
@@ -39,7 +38,7 @@ public class MetricaClasificacionErronea implements Strategy {
 			}
 		}
 		
-		return bestFeature;
+		return bestFeature.getTag();
 	}
 	
 }
