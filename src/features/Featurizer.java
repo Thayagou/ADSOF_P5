@@ -23,5 +23,5 @@ public interface Featurizer<T> {
 	 * @param featureTag Etiqueta del feature del que se quiere el valor
 	 * @return Valor de feature en el objeto elem
 	 */
-	public <V> V getValue(T elem, String featureTag);
+	public <V extends Comparable<V>> V getValue(T elem, String featureTag);
 }

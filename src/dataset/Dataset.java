@@ -139,6 +139,10 @@ public class Dataset<T>{
 		return features.remove(tag);
 	}
 	
+	public Featurizer<T> getFeaturizer() {
+		return featurizer;
+	}
+	
 	/**
 	 * Obtiene los valores almacenados en el DataSet
 	 * 
