@@ -8,8 +8,13 @@ import exceptions.NodeNotFoundException;
 import features.*;
 import strategies.Strategy;
 
-public class GreedyTreeLearner<T extends Comparable<T>, L> {
+public class GreedyTreeLearner<T, L> {
 	private Strategy strategy;
+	
+	public GreedyTreeLearner(Strategy strat) {
+		this.strategy = strat;
+	}
+	
 	/*
 	 * public DecisionTree<String> learn(LabeledDataset<T, L> dataset,
 	 * Feature<?>...availableFeatures){ boolean allLabelsEqual = true;

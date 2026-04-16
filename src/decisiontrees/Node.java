@@ -26,9 +26,9 @@ public class Node<T> {
 	
 	/**
 	 * Añade un nodo como hijo
-	 * TODO
 	 *
-	 * @param child
+	 * @param child Nodo hijo que se añade
+	 * @return Nodo al qe se le añade el hijo
 	 */
 	public Node<T> addChild(Node<T> child) {
 		Predicate<T> predicate = child.getPredicate();
@@ -41,11 +41,10 @@ public class Node<T> {
 	
 	/**
 	 * Añade un hijo al nodo con el nombre y la condicion especificados
-	 * TODO
 	 *
-	 * @param name
-	 * @param predicate
-	 * @return
+	 * @param name Nombre del nodo hijo
+	 * @param predicate Predicado del nodo hijo
+	 * @return Nodo al que se le añade el hijo
 	 */
 	public Node<T> withCondition(String name, Predicate<T> predicate) {	
 		return addChild(new Node<>(name, predicate));
@@ -53,16 +52,15 @@ public class Node<T> {
 	
 	/**
 	 * Añade el nodo otherwise a este nodo
-	 * TODO
 	 *
-	 * @param name
-	 * @return
+	 * @param name Nombre del nodo othrwise
+	 * @return Nodo al que se añade el otherwise
 	 */
 	public Node<T> otherwise(String name) {
 		Predicate<T> otherwisePredicate = p->true;
 		
 		for (Node<T> child: children) {
-			otherwisePredicate.and(child.predicate.negate());
+			otherwisePredicate = otherwisePredicate.and(child.predicate.negate());
 		}
 		
 		otherwise = new Node<>(name, otherwisePredicate);

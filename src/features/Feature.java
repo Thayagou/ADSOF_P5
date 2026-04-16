@@ -40,24 +40,12 @@ public class Feature<T extends Comparable<T>> extends ArrayList<T> {
 	
 	public T min() {
 		if (isEmpty()) return null;
-		
-		T min = getFirst();
-		for (T el: this) {
-			if (el.compareTo(min) < 0) min = el;
-		}
-		
-		return min;
+		return Collections.min(this);
 	}
 	
 	public T max() {
 		if (isEmpty()) return null;
-		
-		T max = getFirst();
-		for (T el: this) {
-			if (el.compareTo(max) > 0) max = el;
-		}
-		
-		return max;
+		return Collections.max(this);
 	}
 	
 	/**
