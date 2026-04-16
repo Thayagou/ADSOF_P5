@@ -30,8 +30,13 @@ public class Node<T> {
 	 *
 	 * @param child
 	 */
-	public void addChild(Node<T> child) {
-		this.withCondition(child.name, child.predicate);
+	public Node<T> addChild(Node<T> child) {
+		Predicate<T> predicate = child.getPredicate();
+		if (otherwise != null) otherwise.predicate = otherwise.predicate.and(predicate.negate());
+		
+		children.add(child);
+		
+		return child;
 	}
 	
 	/**
@@ -42,13 +47,8 @@ public class Node<T> {
 	 * @param predicate
 	 * @return
 	 */
-	public Node<T> withCondition(String name, Predicate<T> predicate) {			
-		Node<T> newNode = new Node<>(name, predicate);
-		children.add(newNode);
-		
-		if (otherwise != null) otherwise.predicate = otherwise.predicate.and(predicate.negate());
-		
-		return this;
+	public Node<T> withCondition(String name, Predicate<T> predicate) {	
+		return addChild(new Node<>(name, predicate));
 	}
 	
 	/**

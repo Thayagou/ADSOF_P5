@@ -123,6 +123,10 @@ public class Dataset<T>{
 		return features.get(tag);
 	}
 	
+	public Feature<?> removeFeature(String tag) {
+		return features.remove(tag);
+	}
+	
 	/**
 	 * Obtiene los valores almacenados en el DataSet
 	 * 

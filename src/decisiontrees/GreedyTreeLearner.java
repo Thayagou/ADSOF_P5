@@ -24,12 +24,14 @@ public class GreedyTreeLearner<T extends Comparable<T>, L> {
 
 	// @SuppressWarnings("unchecked")
 	public Node<T> learnRec(Node<T> parentNode, LabeledDataset<T, L> dataset, List<Feature<?>> availableFeatures) {
+		//Misma etiqueta en todos
 		List<L> labels = dataset.getLabels();
 		if (labels.stream().distinct().count() == 1) {
 			return new Node<T>(labels.getFirst().toString(), p -> true);
 		}
 		
-		Feature<?> bestFeature = strategy.getBestFeature(dataset, availableFeatures);
+		// Elegir mejor feature
+		Feature<?> bestFeature = strategy.getBestFeature(dataset);
 		List<Feature<?>> remaining = new ArrayList<>(availableFeatures);
         remaining.remove(bestFeature);
 		
@@ -37,7 +39,7 @@ public class GreedyTreeLearner<T extends Comparable<T>, L> {
         
 		for(List<Integer> value : dist.values()) {
 			LabeledDataset<T, L> subset = dataset.getLabeledSubset(value);
-			parentNode.addChild(learnRec())
+			parentNode.addChild(learnRec());
 		}
 		
 //		Feature<?> best = strategy.getBestFeature(features);
