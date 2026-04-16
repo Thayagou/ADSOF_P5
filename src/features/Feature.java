@@ -22,6 +22,12 @@ public class Feature<T extends Comparable<T>> extends ArrayList<T> {
 	public Feature(String tag) {
 		this.tag = tag;
 	}
+	
+	public Feature(Feature<T> feature) {
+		this(feature.tag);
+		
+		this.addAll(feature);
+	}
 
 	/**
 	 * Obtiene el tag del feature

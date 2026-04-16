@@ -32,6 +32,18 @@ public class Dataset<T>{
 		}
 	}
 	
+	public Dataset(Dataset<T> dataset) {
+		this.featurizer = dataset.featurizer;
+		this.collection = new ArrayList<>(dataset.collection);
+		
+		for (String key : dataset.features.keySet()) {
+			Feature<?> orig = dataset.features.get(key);
+			Feature<?> f = new Feature<>(orig);
+			
+			this.features.put(key, f);
+		}
+	}
+	
 	/**
 	 * Añade los valores de un nuevo elemento
 	 *

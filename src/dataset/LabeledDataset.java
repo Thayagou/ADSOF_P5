@@ -13,6 +13,13 @@ public class LabeledDataset<T, L> extends Dataset<T> {
 
 		this.labelProvider = labelProvider;
 	}
+	
+	public LabeledDataset(LabeledDataset<T, L> labeledDataset) {
+		super(labeledDataset);
+		
+		this.labelProvider = labeledDataset.labelProvider;
+		this.labels.addAll(labeledDataset.labels);
+	}
 
 	@Override
 	public void add(T elem) {
