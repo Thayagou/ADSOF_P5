@@ -8,7 +8,7 @@ import strategies.MetricaClasificacionErronea;
 
 public class EjemploDeUsoApartado5 {
 	public static void main(String[] args) {
-		
+		System.out.println(learnTree());
 	}
 	
 	public static DecisionTree<Weather> learnTree() {
@@ -20,8 +20,11 @@ public class EjemploDeUsoApartado5 {
 	private static LabeledDataset<Weather, Boolean> buildDataSet() { 
 		Weather conditions [] = {
 				new Weather (WeatherCondition. RAINY, Temperature.COLD),
-				new Weather (WeatherCondition. RAINY, Temperature.HOT)
+				new Weather (WeatherCondition. RAINY, Temperature.HOT),
+				new Weather (WeatherCondition. SUNNY, Temperature.COLD),
+				new Weather (WeatherCondition. SUNNY, Temperature.HOT)
 		};
+		
 		LabeledDataset <Weather, Boolean> ds = new LabeledDataset<>(new WeatherFeaturizer(), new ShouldIPlayTennisToday());
 		ds.addAll(conditions);
 		return ds;
