@@ -4,12 +4,12 @@ import java.util.function.Predicate;
 import java.util.*;
 
 import dataset.*;
-import exceptions.NodeNotFoundException;
 import features.*;
 import strategies.Strategy;
 
 public class GreedyTreeLearner<T, L> {
 	private Strategy strategy;
+	private static int count = 0;
 	
 	public GreedyTreeLearner(Strategy strat) {
 		this.strategy = strat;
@@ -24,6 +24,8 @@ public class GreedyTreeLearner<T, L> {
 		//Misma etiqueta en todos
 		List<L> labels = dataset.getLabels();
 		if (labels.stream().distinct().count() == 1) {
+			System.out.println("Nuevo nodo!");
+			currNode.setName(currNode.getName() + ". Label:  " + labels.getFirst());
 			return;
 		}
 		
@@ -34,7 +36,7 @@ public class GreedyTreeLearner<T, L> {
 		//System.out.println(dataset);
 		
         TreeMap<K, List<Integer>> dist = bestFeature.distributionPositions();
-        //System.out.println(dist);
+        System.out.println(dist + "\n\n");
         Featurizer<T> featurizer = dataset.getFeaturizer();
         
 		for(K key : dist.keySet()) {
@@ -42,15 +44,19 @@ public class GreedyTreeLearner<T, L> {
 
 			Predicate<T> childPredicate = null;
 			DecisionTree<T> child = null;
-			
+			System.out.println(key);
 			/* Si el valor es el mayor se le asigna un otherwise para evitar stagnant values
 			 * Si es un valor intermedio, le asigna el intervalo (lowerBound - curKey]
 			 * Si es el menor se le asigna el rango menor que (-inf - curkey]
 			 */
 			if (dist.higherKey(key) == null) {
-				child = currNode.otherwise(key.toString() + subDataset.toString());
+				System.out.println("Entra " + key.toString());
+				currNode.otherwise((count++) + "- " + key.toString());
+				child = currNode.getOtherwise();
+				
 			} else if ( dist.lowerKey(key) == null) {
 				childPredicate = p-> ((K) featurizer.getValue(p, tagBestFeature)).compareTo(key) < 0 ;
+				
 			} else {
 				K lowerBound = dist.lowerKey(key);
 				childPredicate = p-> ((K) featurizer.getValue(p, tagBestFeature)).compareTo(key) <= 0 
@@ -58,20 +64,66 @@ public class GreedyTreeLearner<T, L> {
 			}
 			
 			if (child == null) {
-				child = new DecisionTree<>(key.toString() + subDataset.toString(), childPredicate);
+				child = new DecisionTree<>((count++) + "- " + key.toString(), childPredicate);
 				currNode.addChild(child);
 			}
 			
 			learnRec(subDataset, child);
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <K extends Comparable<K>> DecisionTree<T> learnRecV2(LabeledDataset<T, L> dataset, Predicate<T> predicate) {
+		System.out.println(dataset);
+		//Misma etiqueta en todos
+		List<L> labels = dataset.getLabels();
+		if (labels.stream().distinct().count() == 1) {
+			System.out.println("Nuevo nodo!");
+			
+			return new DecisionTree<T>((count++) + "- " + labels.getFirst().toString(), predicate);
+		}
+		
+		// Elegir mejor feature
+		String tagBestFeature = strategy.getBestFeature(dataset);
+		System.out.println(tagBestFeature);
+		Feature<K> bestFeature = (Feature<K>) dataset.removeFeature(tagBestFeature);
+		//System.out.println(dataset);
+		
+		DecisionTree<T> curr = new DecisionTree<>((count++) + "- " + tagBestFeature, predicate);
+		
+        TreeMap<K, List<Integer>> dist = bestFeature.distributionPositions();
+        System.out.println(dist + "\n\n");
+        Featurizer<T> featurizer = dataset.getFeaturizer();
+        
+		for(K key : dist.keySet()) {
+			LabeledDataset<T, L> subDataset = dataset.getLabeledSubset(dist.get(key));
+
+			Predicate<T> childPredicate = null;
+			System.out.println(key);
+			/* Si el valor es el mayor se le asigna un otherwise para evitar stagnant values
+			 * Si es un valor intermedio, le asigna el intervalo (lowerBound - curKey]
+			 * Si es el menor se le asigna el rango menor que (-inf - curkey]
+			 */
+			if (dist.higherKey(key) == null) {
+				System.out.println("Entra " + key.toString());
+				curr.otherwise(learnRecV2(subDataset, p->true));
+				
+			} else if ( dist.lowerKey(key) == null) {
+				childPredicate = p-> ((K) featurizer.getValue(p, tagBestFeature)).compareTo(key) < 0 ;
+				curr.addChild(learnRecV2(subDataset, childPredicate));
+				
+			} else {
+				K lowerBound = dist.lowerKey(key);
+				childPredicate = p-> ((K) featurizer.getValue(p, tagBestFeature)).compareTo(key) <= 0 
+						&& ((K) featurizer.getValue(p, tagBestFeature)).compareTo(lowerBound) > 0;
+				curr.addChild(learnRecV2(subDataset, childPredicate));
+			}
+		}
+		
+		return curr;
+	}
 
 	public DecisionTree<T> learn(LabeledDataset<T, L> dataset) {
-		DecisionTree<T> dTree = new DecisionTree<>("root");
-		
-		learnRec(new LabeledDataset<T, L>(dataset), dTree);
-
-
-		return dTree;
+		return learnRecV2(new LabeledDataset<T, L>(dataset), p->true);
 	}
 }

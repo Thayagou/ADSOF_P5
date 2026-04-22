@@ -165,13 +165,19 @@ public class DecisionTree<T> {
 	 * @return Nodo al que se añade el otherwise
 	 */
 	public DecisionTree<T> otherwise(String name) {
+		return otherwise(new DecisionTree<>(name));
+	}
+	
+	public DecisionTree<T> otherwise(DecisionTree<T> otherwise) {
 		Predicate<T> otherwisePredicate = p->true;
 		
 		for (DecisionTree<T> child: children) {
 			otherwisePredicate = otherwisePredicate.and(child.predicate.negate());
 		}
 		
-		otherwise = new DecisionTree<>(name, otherwisePredicate);
+		otherwise.predicate = otherwisePredicate;
+		
+		this.otherwise = otherwise;
 		
 		return this;
 	}
@@ -186,6 +192,10 @@ public class DecisionTree<T> {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public List<DecisionTree<T>> getChildren() {

@@ -53,11 +53,21 @@ public class Dataset<T> {
 	public Dataset<T> getSubset(List<Integer> index) {
 		Dataset<T> dataset = new Dataset<T>(featurizer);
 
+		dataset.copyFeaturesFrom(this);
+		
 		for (Integer i : index) {
 			dataset.add(collection.get(i));
 		}
 
 		return dataset;
+	}
+	
+	protected void copyFeaturesFrom(Dataset<T> source) {
+		features.clear();
+		
+		for (String feat: source.features.keySet()) {
+			features.put(feat, new Feature<>(feat));
+		}
 	}
 
 	/*
