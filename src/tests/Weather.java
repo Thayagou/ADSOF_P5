@@ -16,4 +16,11 @@ public class Weather {
 	public Temperature getTemp() {
 		return temp;
 	}
+
+	@Override
+	public String toString() {
+		return "Weather [cond=" + cond + ", temp=" + temp + "]";
+	}
+	
+	
 }

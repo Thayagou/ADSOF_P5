@@ -8,7 +8,9 @@ import strategies.MetricaClasificacionErronea;
 
 public class EjemploDeUsoApartado5 {
 	public static void main(String[] args) {
-		System.out.println(learnTree());
+		DecisionTree<Weather> trih = learnTree();
+		System.out.println(trih);
+		System.out.println(trih.predict(buildDataSet()));
 	}
 	
 	public static DecisionTree<Weather> learnTree() {

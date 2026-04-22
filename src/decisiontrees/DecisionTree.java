@@ -220,6 +220,8 @@ public class DecisionTree<T> {
 			for (DecisionTree<T> child: children) {
 				sb.append(child.toString());
 			}
+			
+			if (otherwise != null) sb.append(otherwise.toString());
 		}
 		
 		return sb.toString();

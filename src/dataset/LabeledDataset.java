@@ -30,6 +30,12 @@ public class LabeledDataset<T, L> extends Dataset<T> {
 	public LabeledDataset<T, L> getLabeledSubset(List<Integer> index) {
 		LabeledDataset<T, L> dataset = new LabeledDataset<T, L>(featurizer, labelProvider);
 
+		dataset.features.clear();
+		
+		for (String feat: this.features.keySet()) {
+			dataset.features.put(feat, new Feature<>(feat));
+		}
+		
 		for (Integer i : index) {
 			dataset.add(collection.get(i));
 		}

@@ -20,6 +20,7 @@ public class GreedyTreeLearner<T, L> {
 	// @SuppressWarnings("unchecked")
 	@SuppressWarnings("unchecked")
 	public <K extends Comparable<K>> void learnRec(LabeledDataset<T, L> dataset, DecisionTree<T> currNode) {
+		System.out.println(dataset);
 		//Misma etiqueta en todos
 		List<L> labels = dataset.getLabels();
 		if (labels.stream().distinct().count() == 1) {
@@ -28,12 +29,14 @@ public class GreedyTreeLearner<T, L> {
 		
 		// Elegir mejor feature
 		String tagBestFeature = strategy.getBestFeature(dataset);
+		System.out.println(tagBestFeature);
 		Feature<K> bestFeature = (Feature<K>) dataset.removeFeature(tagBestFeature);
-		
+		//System.out.println(dataset);
 		
         TreeMap<K, List<Integer>> dist = bestFeature.distributionPositions();
-        
+        //System.out.println(dist);
         Featurizer<T> featurizer = dataset.getFeaturizer();
+        
 		for(K key : dist.keySet()) {
 			LabeledDataset<T, L> subDataset = dataset.getLabeledSubset(dist.get(key));
 
@@ -45,7 +48,7 @@ public class GreedyTreeLearner<T, L> {
 			 * Si es el menor se le asigna el rango menor que (-inf - curkey]
 			 */
 			if (dist.higherKey(key) == null) {
-				child = currNode.otherwise(subDataset.toString());
+				child = currNode.otherwise(key.toString() + subDataset.toString());
 			} else if ( dist.lowerKey(key) == null) {
 				childPredicate = p-> ((K) featurizer.getValue(p, tagBestFeature)).compareTo(key) < 0 ;
 			} else {
@@ -55,7 +58,7 @@ public class GreedyTreeLearner<T, L> {
 			}
 			
 			if (child == null) {
-				child = new DecisionTree<>(tagBestFeature + key.toString(), childPredicate);
+				child = new DecisionTree<>(key.toString() + subDataset.toString(), childPredicate);
 				currNode.addChild(child);
 			}
 			
