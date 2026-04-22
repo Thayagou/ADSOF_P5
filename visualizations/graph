@@ -1,0 +1,12 @@
+digraph TestGraph{
+
+"0- Root\nSplit: condition" -> "1- RAINY\nLeaf label: false"
+
+"0- Root\nSplit: condition" -> "2- SUNNY\nSplit: temperature"[label=Otherwise]
+
+"2- SUNNY\nSplit: temperature" -> "3- COLD\nLeaf label: false"
+
+"2- SUNNY\nSplit: temperature" -> "4- HOT\nLeaf label: true"[label=Otherwise]
+
+}
+
