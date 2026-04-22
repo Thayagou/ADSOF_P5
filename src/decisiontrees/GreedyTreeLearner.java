@@ -15,21 +15,11 @@ public class GreedyTreeLearner<T, L> {
 		this.strategy = strat;
 	}
 	
-	/*
-	 * public DecisionTree<String> learn(LabeledDataset<T, L> dataset,
-	 * Feature<?>...availableFeatures){ boolean allLabelsEqual = true;
-	 * if(!dataset.getLabels().isEmpty()) { L primerElemento =
-	 * dataset.getLabels().get(0); for(L l : dataset.getLabels()) { if(l !=
-	 * primerElemento) { allLabelsEqual = false; break; } } } else { return null; }
-	 * 
-	 * if(allLabelsEqual) return new Node(dataset.getLabels().get(0).getName());
-	 * 
-	 * }
-	 */
+	
 
 	// @SuppressWarnings("unchecked")
 	@SuppressWarnings("unchecked")
-	public <K extends Comparable<K>> void learnRec(LabeledDataset<T, L> dataset, Node<T> currNode) {
+	public <K extends Comparable<K>> void learnRec(LabeledDataset<T, L> dataset, DecisionTree<T> currNode) {
 		//Misma etiqueta en todos
 		List<L> labels = dataset.getLabels();
 		if (labels.stream().distinct().count() == 1) {
@@ -48,7 +38,7 @@ public class GreedyTreeLearner<T, L> {
 			LabeledDataset<T, L> subDataset = dataset.getLabeledSubset(dist.get(key));
 
 			Predicate<T> childPredicate = null;
-			Node<T> child = null;
+			DecisionTree<T> child = null;
 			
 			/* Si el valor es el mayor se le asigna un otherwise para evitar stagnant values
 			 * Si es un valor intermedio, le asigna el intervalo (lowerBound - curKey]
@@ -65,7 +55,7 @@ public class GreedyTreeLearner<T, L> {
 			}
 			
 			if (child == null) {
-				child = new Node<>(tagBestFeature + key.toString(), childPredicate);
+				child = new DecisionTree<>(tagBestFeature + key.toString(), childPredicate);
 				currNode.addChild(child);
 			}
 			
@@ -76,7 +66,7 @@ public class GreedyTreeLearner<T, L> {
 	public DecisionTree<T> learn(LabeledDataset<T, L> dataset) throws NodeNotFoundException {
 		DecisionTree<T> dTree = new DecisionTree<>("root");
 		
-		learnRec(new LabeledDataset<T, L>(dataset), dTree.getRoot());
+		learnRec(new LabeledDataset<T, L>(dataset), dTree);
 
 
 		return dTree;

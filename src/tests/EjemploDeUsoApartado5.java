@@ -6,8 +6,7 @@ public class EjemploDeUsoApartado5 {
 	}
 	
 	public static DecisionTree<Weather> learnTree() {
-		buildDataSet();
-		=
+		buildDataSet() =
 		=
 		LabeledDataset<Weather, Boolean> dataSet GreedyTreeLearner<Weather, Boolean> learner new GreedyTreeLearner<>(); Decision Tree<Weather> tree learner.learn (dataSet); return tree;
 		=

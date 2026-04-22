@@ -45,26 +45,10 @@ public class LabeledDataset<T, L> extends Dataset<T> {
 	}
 
 	@Override
-	public void removeDuplicates() {
-		List<T> newCollection = new ArrayList<>();
-		List<L> newLabels = new ArrayList<>();
-		Set<T> seen = new HashSet<>();
-
-		for (int i = 0; i < collection.size(); i++) {
-			T elem = collection.get(i);
-			if (seen.add(elem)) {
-				newCollection.add(elem);
-				newLabels.add(labels.get(i));
-			}
-		}
-
-		collection.clear();
-		labels.clear();
-		features.values().forEach(List::clear);
-
-		for (int i = 0; i < newCollection.size(); i++) {
-			add(newCollection.get(i));
-		}
+	protected void removeLine(int line) {
+		super.removeLine(line);
+		
+		labels.remove(line);
 	}
 
 	public List<L> getLabels() {

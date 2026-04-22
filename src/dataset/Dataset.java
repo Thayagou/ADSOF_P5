@@ -90,34 +90,33 @@ public class Dataset<T> {
 	 *
 	 * @param elems Elementos a añadir
 	 */
+	@SuppressWarnings("unchecked")
 	public void addAll(T... elems) {
 		for (T elem : elems)
 			add(elem);
 	}
-
+	
 	public void removeDuplicates() {
-		List<T> newCollection = new ArrayList<>();
-		Set<T> seen = new HashSet<>();
-
-		for (int i = 0; i < collection.size(); i++) {
-			T elem = collection.get(i);
-			if (seen.add(elem)) {
-				newCollection.add(elem);
+		int size;
+		size = collection.size();
+		
+		for (int i = 0; i < size; i++) {
+			for (int j = i + 1; j < size; j++) {
+				if (equalLine(i, j)) {
+					removeLine(j);
+					size--;
+					j--;
+				}
 			}
-		}
-
-		collection.clear();
-		features.values().forEach(List::clear);
-
-		for (T elem : newCollection) {
-			add(elem);
 		}
 	}
 
-	private void removeLine(int line) {
+	protected void removeLine(int line) {
 		for (Feature<?> col : features.values()) {
 			col.remove(line);
 		}
+		
+		collection.remove(line);
 	}
 
 	private boolean equalLine(int i, int j) {
@@ -163,5 +162,10 @@ public class Dataset<T> {
 
 	public List<Feature<?>> getTable() {
 		return new ArrayList<>(features.values());
+	}
+	
+	@Override
+	public String toString() {
+		return features.toString();
 	}
 }
