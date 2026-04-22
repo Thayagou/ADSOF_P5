@@ -8,4 +8,12 @@ public class Weather {
 		this.cond = cond;
 		this.temp = temp;
 	}
+
+	public WeatherCondition getCond() {
+		return cond;
+	}
+
+	public Temperature getTemp() {
+		return temp;
+	}
 }

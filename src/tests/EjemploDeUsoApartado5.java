@@ -1,22 +1,28 @@
 package tests;
 
+import dataset.LabeledDataset;
+import decisiontrees.DecisionTree;
+import decisiontrees.GreedyTreeLearner;
+import labels.ShouldIPlayTennisToday;
+import strategies.MetricaClasificacionErronea;
+
 public class EjemploDeUsoApartado5 {
 	public static void main(String[] args) {
 		
 	}
 	
 	public static DecisionTree<Weather> learnTree() {
-		buildDataSet() =
-		=
-		LabeledDataset<Weather, Boolean> dataSet GreedyTreeLearner<Weather, Boolean> learner new GreedyTreeLearner<>(); Decision Tree<Weather> tree learner.learn (dataSet); return tree;
-		=
-		}
-	private static LabeledDataset<Weather, Boolean> buildDataSet() { Weather conditions [] = {
+		LabeledDataset<Weather, Boolean> dataSet = buildDataSet();
+		GreedyTreeLearner<Weather, Boolean> learner = new GreedyTreeLearner<>(new MetricaClasificacionErronea()); 
+		DecisionTree<Weather> tree = learner.learn (dataSet); return tree;
+	}
+
+	private static LabeledDataset<Weather, Boolean> buildDataSet() { 
+		Weather conditions [] = {
+				new Weather (WeatherCondition. RAINY, Temperature.COLD),
+				new Weather (WeatherCondition. RAINY, Temperature.HOT)
 		};
-		new Weather (WeatherCondition. RAINY, Temperature.COLD), new Weather (WeatherCondition. RAINY, Temperature.HOT) // más objetos .
-		LabeledDataset <Weather, Boolean> ds
-		=
-		new LabeledDataset<>(new WeatherFeaturizer(), new ShouldIPlayTennisToday());
+		LabeledDataset <Weather, Boolean> ds = new LabeledDataset<>(new WeatherFeaturizer(), new ShouldIPlayTennisToday());
 		ds.addAll(conditions);
 		return ds;
 		}

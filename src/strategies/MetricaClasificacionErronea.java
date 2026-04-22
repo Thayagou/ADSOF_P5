@@ -5,7 +5,8 @@ import features.*;
 import java.util.*;
 
 public class MetricaClasificacionErronea implements Strategy {
-
+	public MetricaClasificacionErronea() { }
+	
 	@Override
 	public <T, L> String getBestFeature(LabeledDataset<T, L> dataset) {
 		List<Feature<?>> features = dataset.getTable();

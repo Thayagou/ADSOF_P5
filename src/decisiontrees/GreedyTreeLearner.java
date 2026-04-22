@@ -63,7 +63,7 @@ public class GreedyTreeLearner<T, L> {
 		}
 	}
 
-	public DecisionTree<T> learn(LabeledDataset<T, L> dataset) throws NodeNotFoundException {
+	public DecisionTree<T> learn(LabeledDataset<T, L> dataset) {
 		DecisionTree<T> dTree = new DecisionTree<>("root");
 		
 		learnRec(new LabeledDataset<T, L>(dataset), dTree);

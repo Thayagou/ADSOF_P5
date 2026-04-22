@@ -54,4 +54,13 @@ public class LabeledDataset<T, L> extends Dataset<T> {
 	public List<L> getLabels() {
 		return labels;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < collection.size(); i++) {
+			sb.append(collection.get(i).toString() + ": " + labels.get(i) + "\n");
+		}
+		return super.toString() + "\n" + sb.toString();
+	}
 }
