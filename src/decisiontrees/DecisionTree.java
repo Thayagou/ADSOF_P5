@@ -4,10 +4,12 @@ import java.util.function.Predicate;
 
 import dataset.Dataset;
 import exceptions.*;
+import visitorPattern.Element;
+import visitorPattern.Visitor;
 
 import java.util.*;
 
-public class DecisionTree<T> {
+public class DecisionTree<T> implements Element{
 	private String name = null;
 	private Predicate<T> predicate = null;
 	private List<DecisionTree<T>> children = new ArrayList<>();
@@ -235,6 +237,12 @@ public class DecisionTree<T> {
 		}
 		
 		return sb.toString();
+	}
+
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
+		
 	}
 
 }

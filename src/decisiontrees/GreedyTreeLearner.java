@@ -73,14 +73,14 @@ public class GreedyTreeLearner<T, L> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <K extends Comparable<K>> DecisionTree<T> learnRecV2(LabeledDataset<T, L> dataset, Predicate<T> predicate) {
+	public <K extends Comparable<K>> DecisionTree<T> learnRecV2(LabeledDataset<T, L> dataset, Predicate<T> predicate, String name) {
 		System.out.println(dataset);
 		//Misma etiqueta en todos
 		List<L> labels = dataset.getLabels();
 		if (labels.stream().distinct().count() == 1) {
 			System.out.println("Nuevo nodo!");
 			
-			return new DecisionTree<T>((count++) + "- " + labels.getFirst().toString(), predicate);
+			return new DecisionTree<T>((count++) + "- " + name + "\nLeaf label: " + labels.getFirst().toString(), predicate);
 		}
 		
 		// Elegir mejor feature
@@ -89,7 +89,7 @@ public class GreedyTreeLearner<T, L> {
 		Feature<K> bestFeature = (Feature<K>) dataset.removeFeature(tagBestFeature);
 		//System.out.println(dataset);
 		
-		DecisionTree<T> curr = new DecisionTree<>((count++) + "- " + tagBestFeature, predicate);
+		DecisionTree<T> curr = new DecisionTree<>((count++) + "- " + name + "\nSplit: " + tagBestFeature, predicate);
 		
         TreeMap<K, List<Integer>> dist = bestFeature.distributionPositions();
         System.out.println(dist + "\n\n");
@@ -106,17 +106,17 @@ public class GreedyTreeLearner<T, L> {
 			 */
 			if (dist.higherKey(key) == null) {
 				System.out.println("Entra " + key.toString());
-				curr.otherwise(learnRecV2(subDataset, p->true));
+				curr.otherwise(learnRecV2(subDataset, p->true, key.toString()));
 				
 			} else if ( dist.lowerKey(key) == null) {
-				childPredicate = p-> ((K) featurizer.getValue(p, tagBestFeature)).compareTo(key) < 0 ;
-				curr.addChild(learnRecV2(subDataset, childPredicate));
+				childPredicate = p-> ((K) featurizer.getValue(p, tagBestFeature)).compareTo(key) <= 0 ;
+				curr.addChild(learnRecV2(subDataset, childPredicate, key.toString()));
 				
 			} else {
 				K lowerBound = dist.lowerKey(key);
 				childPredicate = p-> ((K) featurizer.getValue(p, tagBestFeature)).compareTo(key) <= 0 
 						&& ((K) featurizer.getValue(p, tagBestFeature)).compareTo(lowerBound) > 0;
-				curr.addChild(learnRecV2(subDataset, childPredicate));
+				curr.addChild(learnRecV2(subDataset, childPredicate, key.toString()));
 			}
 		}
 		
@@ -124,6 +124,6 @@ public class GreedyTreeLearner<T, L> {
 	}
 
 	public DecisionTree<T> learn(LabeledDataset<T, L> dataset) {
-		return learnRecV2(new LabeledDataset<T, L>(dataset), p->true);
+		return learnRecV2(new LabeledDataset<T, L>(dataset), p->true, "Root");
 	}
 }
