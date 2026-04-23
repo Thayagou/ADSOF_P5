@@ -42,6 +42,6 @@ public class EjemploDeUsoApartado2 {
 		Dataset<Person> dataSet = new Dataset<>(new PersonFeaturizer()); // A Featurizer for Person objects 
 		dataSet.addAll(people);
 		return dataSet;
-		}
+	}
 
 }

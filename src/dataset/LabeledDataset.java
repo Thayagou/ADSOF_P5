@@ -5,10 +5,10 @@ import features.*;
 import java.util.*;
 
 public class LabeledDataset<T, L> extends Dataset<T> {
-	private LabelProvider<T, L> labelProvider;
+	private LabelProvider<? super T, ? extends L> labelProvider;
 	private List<L> labels = new ArrayList<>();
 
-	public LabeledDataset(Featurizer<T> featurizer, LabelProvider<T, L> labelProvider) {
+	public LabeledDataset(Featurizer<? super T> featurizer, LabelProvider<? super T, ? extends L> labelProvider) {
 		super(featurizer);
 
 		this.labelProvider = labelProvider;

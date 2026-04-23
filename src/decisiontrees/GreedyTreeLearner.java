@@ -37,7 +37,7 @@ public class GreedyTreeLearner<T, L> {
 		
         TreeMap<K, List<Integer>> dist = bestFeature.distributionPositions();
         System.out.println(dist + "\n\n");
-        Featurizer<T> featurizer = dataset.getFeaturizer();
+        Featurizer<? super T> featurizer = dataset.getFeaturizer();
         
 		for(K key : dist.keySet()) {
 			LabeledDataset<T, L> subDataset = dataset.getLabeledSubset(dist.get(key));
@@ -80,7 +80,7 @@ public class GreedyTreeLearner<T, L> {
 		if (labels.stream().distinct().count() == 1) {
 			System.out.println("Nuevo nodo!");
 			
-			return new DecisionTree<T>((count++) + "- " + name + "\nLeaf label: " + labels.getFirst().toString(), predicate);
+			return new DecisionTree<T>(/*(count++) + "- " +*/ name + "\nLeaf label: " + labels.getFirst().toString(), predicate);
 		}
 		
 		// Elegir mejor feature
@@ -89,11 +89,11 @@ public class GreedyTreeLearner<T, L> {
 		Feature<K> bestFeature = (Feature<K>) dataset.removeFeature(tagBestFeature);
 		//System.out.println(dataset);
 		
-		DecisionTree<T> curr = new DecisionTree<>((count++) + "- " + name + "\nSplit: " + tagBestFeature, predicate);
+		DecisionTree<T> curr = new DecisionTree<>(/*(count++) + "- " +*/ name + "\nSplit: " + tagBestFeature, predicate);
 		
         TreeMap<K, List<Integer>> dist = bestFeature.distributionPositions();
-        System.out.println(dist + "\n\n");
-        Featurizer<T> featurizer = dataset.getFeaturizer();
+        //System.out.println(dist + "\n\n");
+        Featurizer<? super T> featurizer = dataset.getFeaturizer();
         
 		for(K key : dist.keySet()) {
 			LabeledDataset<T, L> subDataset = dataset.getLabeledSubset(dist.get(key));

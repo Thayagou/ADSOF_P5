@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class Dataset<T> {
 
 	/** Campo featurizer. */
-	protected Featurizer<T> featurizer;
+	protected Featurizer<? super T> featurizer;
 
 	/** Features del dataset. */
 	protected LinkedHashMap<String, Feature<?>> features = new LinkedHashMap<String, Feature<?>>();
@@ -25,19 +25,24 @@ public class Dataset<T> {
 	 *
 	 * @param featurizer parámetro featurizer
 	 */
-	public Dataset(Featurizer<T> featurizer) {
+	public Dataset(Featurizer<? super T> featurizer) {
 		this.featurizer = featurizer;
 		for (Feature<?> f : featurizer.getFeatureList()) {
 			this.features.put(f.getTag(), f);
 		}
 	}
 
-	public Dataset(Dataset<T> dataset) {
-		this.featurizer = dataset.featurizer;
-		this.collection = new ArrayList<>(dataset.collection);
+	/**
+	 * Instancia un nuevo Dataset a partir de otro, creando una copia exacta de este último
+	 * 
+	 * @param source Dataset del cual se realiza la copia
+	 */
+	public Dataset(Dataset<T> source) {
+		this.featurizer = source.featurizer;
+		this.collection = new ArrayList<>(source.collection);
 
-		for (String key : dataset.features.keySet()) {
-			Feature<?> orig = dataset.features.get(key);
+		for (String key : source.features.keySet()) {
+			Feature<?> orig = source.features.get(key);
 			Feature<?> f = new Feature<>(orig);
 
 			this.features.put(key, f);
@@ -69,19 +74,6 @@ public class Dataset<T> {
 			features.put(feat, new Feature<>(feat));
 		}
 	}
-
-	/*
-	 * @SuppressWarnings("unchecked") public <K extends Comparable<K>> TreeMap<K,
-	 * Dataset<T>> splitDataset(String tag) { Feature<K> splitFeat = (Feature<K>)
-	 * removeFeature(tag);
-	 * 
-	 * TreeMap<K, List<Integer>> positions = splitFeat.distributionPositions();
-	 * 
-	 * TreeMap<K, Dataset<T>> splitDataset = new TreeMap<>(); for (Map.Entry<K,
-	 * List<Integer>> entry: positions.entrySet()) {
-	 * 
-	 * } }
-	 */
 
 	/**
 	 * Añade los valores de un nuevo elemento
@@ -157,7 +149,7 @@ public class Dataset<T> {
 		return features.remove(tag);
 	}
 
-	public Featurizer<T> getFeaturizer() {
+	public Featurizer<? super T> getFeaturizer() {
 		return featurizer;
 	}
 

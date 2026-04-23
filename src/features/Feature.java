@@ -23,10 +23,10 @@ public class Feature<T extends Comparable<T>> extends ArrayList<T> {
 		this.tag = tag;
 	}
 	
-	public Feature(Feature<T> feature) {
-		this(feature.tag);
+	public Feature(Feature<T> source) {
+		this(source.tag);
 		
-		this.addAll(feature);
+		this.addAll(source);
 	}
 
 	/**
