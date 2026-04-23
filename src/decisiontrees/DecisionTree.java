@@ -9,26 +9,60 @@ import visitorPattern.Visitor;
 
 import java.util.*;
 
+/**
+ * Tipo: Class DecisionTree: Árbol cuyos nodos contienen predicados que condicionan acceso y permiten exploración
+ *
+ * @param <T> parámetro genérico
+ */
 public class DecisionTree<T> implements Element{
+	
+	/** Nombre del nodo */
 	private String name = null;
+	
+	/** Predicado que determina los objetos que acceden al nodo */
 	private Predicate<T> predicate = null;
+	
+	/** Lista de hijos del nodo */
 	private List<DecisionTree<T>> children = new ArrayList<>();
+	
+	/** Nodo Otherwise */
 	private DecisionTree<T> otherwise = null;
 
+	/**
+	 * Instancia un nuevo Objeto DecisionTree.
+	 *
+	 * @param rootName nombre del root
+	 */
 	public DecisionTree(String rootName) {
 		this.name = rootName;
 		this.predicate = p->true;
 	}
 	
+	/**
+	 * Instancia un nuevo Objeto DecisionTree.
+	 */
 	public DecisionTree() { 
 		this.predicate = p->true;
 	}
 	
+	/**
+	 * Instancia un nuevo Objeto DecisionTree.
+	 *
+	 * @param nodeName parámetro nodeName
+	 * @param predicate parámetro predicate
+	 */
 	public DecisionTree(String nodeName, Predicate<T> predicate) {
 		this.name = nodeName;
 		this.predicate = predicate;
 	}
 
+	/**
+	 * Si no había raíz, establece su nombre a nodeName, en caso contrario busca el nodo  con dicho nombre
+	 *
+	 * @param nodeName nombre del nodo buscado
+	 * @return DecisionTree que representa el nodo buscado
+	 * @throws NodeNotFoundException se lanza en caso de que el nodo buscado no se encuentre
+	 */
 	public DecisionTree<T> node(String nodeName) throws NodeNotFoundException {
 		// Caso del nodo raíz
 		if (name == null) {
@@ -41,13 +75,12 @@ public class DecisionTree<T> implements Element{
 	
 	/**
 	 * Devuelve el primer nodo hijo que cumple su predicado para el valor
-	 * TODO
 	 *
-	 * @param value
-	 * @return
-	 * @throws StagnantValueException
+	 * @param value Valor que tratamos de encontrar hoja
+	 * @return valor de tipo DecisionTree
+	 * @throws StagnantValueException excepción de tipo StagnantValueException
 	 */
-	public DecisionTree<T> nextPredict (T value) throws StagnantValueException {
+	private DecisionTree<T> nextPredict (T value) throws StagnantValueException {
 		if (isLeafNode()) return this;
 		
 		for (DecisionTree<T> n: children) {
@@ -60,6 +93,12 @@ public class DecisionTree<T> implements Element{
 		throw new StagnantValueException(value);
 	}
 
+	/**
+	 * Obtiene etiquetas resultado para la entrada proporcionada
+	 *
+	 * @param values Lista de valores a obtener etiquetas
+	 * @return Mapa con etiquetas y valores
+	 */
 	public Map<String, List<T>> predict(List<T> values) {
 		DecisionTree<T> curr, next = null;
 		Map<String, List<T>> endValues = new LinkedHashMap<>();
@@ -84,15 +123,34 @@ public class DecisionTree<T> implements Element{
 		return endValues;
 	}
 
+	/**
+	 * Obtiene etiquetas resultado para los objetos almacenados en el dataset
+	 *
+	 * @param dataset Dataset al que se desea proporcionar etiquetas
+	 * @return Mapa con etiquetas y valores
+	 */
 	public Map<String, List<T>> predict(Dataset<T> dataset) {
 		return predict(dataset.getValues());
 	}
 
+	/**
+	 * Obtiene etiquetas resultado para la entrada proporcionada
+	 *
+	 * @param values Array de valores a obtener etiquetas
+	 * @return Mapa con etiquetas y valores
+	 */
 	@SuppressWarnings("unchecked")
 	public Map<String, List<T>> predict(T... values) {
 		return predict(List.of(values));
 	}
 
+	/**
+	 * Obtiene el predicado resultante de pasar por todos los nodos del camino hasta el nodo buscado
+	 *
+	 * @param nodeName Nombre del nodo buscado
+	 * @return Predicado resultante
+	 * @throws NodeNotFoundException Se lanza en caso de que no se encuentre el nodo
+	 */
 	public Predicate<T> getPredicate(String nodeName) throws NodeNotFoundException {
 		Predicate<T> result = predicateRec(this, nodeName, t -> true);
 
@@ -101,6 +159,14 @@ public class DecisionTree<T> implements Element{
 		return result;
 	}
 
+	/**
+	 * Versión recursiva de getPredicate
+	 *
+	 * @param node Nodo actual siendo explorado
+	 * @param target Nombre del nodo buscado
+	 * @param predAcum Predicado obtenido recorriendo el camino hasta el nodo actual
+	 * @return Predicado resultante
+	 */
 	private Predicate<T> predicateRec(DecisionTree<T> node, String target, Predicate<T> predAcum) {
 		Predicate<T> nextPred = predAcum.and(node.getPredicate());
 
@@ -116,6 +182,13 @@ public class DecisionTree<T> implements Element{
 		return null;
 	}
 
+	/**
+	 * Obtiene el nodo con el nombre buscado a partir de un DFS
+	 *
+	 * @param nodeName Nombre del nodo buscado
+	 * @return Nodo representado por un DecisionTree
+	 * @throws NodeNotFoundException Se lanza en el caso de que no se encuentre el nodo buscado
+	 */
 	private DecisionTree<T> getNode(String nodeName) throws NodeNotFoundException {
 		Stack<DecisionTree<T>> st = new Stack<>();
 
@@ -135,7 +208,7 @@ public class DecisionTree<T> implements Element{
 	}
 	
 	/**
-	 * Añade un nodo como hijo
+	 * Añade un nodo como hijo.
 	 *
 	 * @param child Nodo hijo que se añade
 	 * @return Nodo al qe se le añade el hijo
@@ -150,7 +223,7 @@ public class DecisionTree<T> implements Element{
 	}
 	
 	/**
-	 * Añade un hijo al nodo con el nombre y la condicion especificados
+	 * Añade un hijo al nodo con el nombre y la condicion especificados.
 	 *
 	 * @param name Nombre del nodo hijo
 	 * @param predicate Predicado del nodo hijo
@@ -161,7 +234,7 @@ public class DecisionTree<T> implements Element{
 	}
 	
 	/**
-	 * Añade el nodo otherwise a este nodo
+	 * Añade el nodo otherwise a este nodo.
 	 *
 	 * @param name Nombre del nodo othrwise
 	 * @return Nodo al que se añade el otherwise
@@ -170,6 +243,12 @@ public class DecisionTree<T> implements Element{
 		return otherwise(new DecisionTree<>(name));
 	}
 	
+	/**
+	 * Añade el DecisionTree al nodo Otherwise
+	 *
+	 * @param otherwise DecisionTree a añadir
+	 * @return DecisionTree añadido
+	 */
 	public DecisionTree<T> otherwise(DecisionTree<T> otherwise) {
 		Predicate<T> otherwisePredicate = p->true;
 		
@@ -184,34 +263,75 @@ public class DecisionTree<T> implements Element{
 		return this;
 	}
 
+	/**
+	 * Realiza test del predicado del nodo
+	 *
+	 * @param value valor a testear
+	 * @return resultado del predicado
+	 */
 	public boolean test(T value) {
 		return predicate.test(value);
 	}
 	
+	/**
+	 * Comprueba si el nodo es una hoja
+	 *
+	 * @return true si es una hoja, falso en caso contrario
+	 */
 	public boolean isLeafNode() {
 		return (children.isEmpty() && (otherwise == null));
 	}
 	
+	/**
+	 * Obtiene Name.
+	 *
+	 * @return valor de Name
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Establece Name.
+	 *
+	 * @param name nuevo valor
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
+	/**
+	 * Obtiene Children.
+	 *
+	 * @return valor de Children
+	 */
 	public List<DecisionTree<T>> getChildren() {
 		return Collections.unmodifiableList(children);
 	}
 	
+	/**
+	 * Obtiene Otherwise.
+	 *
+	 * @return valor de Otherwise
+	 */
 	public DecisionTree<T> getOtherwise() {
 		return otherwise;
 	}
 	
+	/**
+	 * Obtiene Predicate.
+	 *
+	 * @return valor de Predicate
+	 */
 	public Predicate<T> getPredicate() {
 		return predicate;
 	}
 	
+	/**
+	 * toString.
+	 *
+	 * @return valor de tipo String
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -239,6 +359,11 @@ public class DecisionTree<T> implements Element{
 		return sb.toString();
 	}
 
+	/**
+	 * Método accept del patrón Visitor que implementa el double dispatch
+	 *
+	 * @param visitor Visitante del árbol
+	 */
 	@Override
 	public void accept(Visitor visitor) {
 		visitor.visit(this);

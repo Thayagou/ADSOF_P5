@@ -1,9 +1,13 @@
+/*
+ * 
+ */
 package decisiontrees;
 
 import java.util.function.Predicate;
 import java.util.*;
 
 import dataset.*;
+import exceptions.InexistantFeatureException;
 import features.*;
 import strategies.Strategy;
 
@@ -19,7 +23,7 @@ public class GreedyTreeLearner<T, L> {
 
 	// @SuppressWarnings("unchecked")
 	@SuppressWarnings("unchecked")
-	public <K extends Comparable<K>> void learnRec(LabeledDataset<T, L> dataset, DecisionTree<T> currNode) {
+	public <K extends Comparable<K>> void learnRec(LabeledDataset<T, L> dataset, DecisionTree<T> currNode) throws InexistantFeatureException {
 		System.out.println(dataset);
 		//Misma etiqueta en todos
 		List<L> labels = dataset.getLabels();
@@ -73,7 +77,7 @@ public class GreedyTreeLearner<T, L> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <K extends Comparable<K>> DecisionTree<T> learnRecV2(LabeledDataset<T, L> dataset, Predicate<T> predicate, String name) {
+	public <K extends Comparable<? super K>> DecisionTree<T> learnRecV2(LabeledDataset<T, L> dataset, Predicate<T> predicate, String name) throws InexistantFeatureException {
 		System.out.println(dataset);
 		//Misma etiqueta en todos
 		List<L> labels = dataset.getLabels();
@@ -86,7 +90,10 @@ public class GreedyTreeLearner<T, L> {
 		// Elegir mejor feature
 		String tagBestFeature = strategy.getBestFeature(dataset);
 		System.out.println(tagBestFeature);
-		Feature<K> bestFeature = (Feature<K>) dataset.removeFeature(tagBestFeature);
+		Feature<K> bestFeature;
+		
+		bestFeature = (Feature<K>) dataset.removeFeature(tagBestFeature);
+		
 		//System.out.println(dataset);
 		
 		DecisionTree<T> curr = new DecisionTree<>(/*(count++) + "- " +*/ name + "\nSplit: " + tagBestFeature, predicate);
@@ -123,7 +130,7 @@ public class GreedyTreeLearner<T, L> {
 		return curr;
 	}
 
-	public DecisionTree<T> learn(LabeledDataset<T, L> dataset) {
+	public DecisionTree<T> learn(LabeledDataset<T, L> dataset) throws InexistantFeatureException {
 		return learnRecV2(new LabeledDataset<T, L>(dataset), p->true, "Root");
 	}
 }

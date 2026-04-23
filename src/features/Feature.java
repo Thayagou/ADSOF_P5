@@ -2,13 +2,15 @@ package features;
 
 import java.util.*;
 
+// TODO: Auto-generated Javadoc
 /**
- * Tipo: Class Feature.
+ * Tipo: Class Feature: almacena objetos de tipo <T> y contiene un tag identificador.
  *
- * @param <T> parámetro genérico
+ * @param <T> parámetro genérico del que esta compuesto el Feature
  */
-public class Feature<T extends Comparable<T>> extends ArrayList<T> {
+public class Feature<T extends Comparable<? super T>> extends ArrayList<T> {
 	
+	/** Número de serialización del feature. */
 	private static final long serialVersionUID = 1L;
 
 	/** Etiqueta del feature (su nombre). */
@@ -17,12 +19,17 @@ public class Feature<T extends Comparable<T>> extends ArrayList<T> {
 	/**
 	 * Instancia un nuevo Objeto Feature.
 	 *
-	 * @param fName parámetro fName
+	 * @param tag parámetro tag
 	 */
 	public Feature(String tag) {
 		this.tag = tag;
 	}
 	
+	/**
+	 * Instancia un nuevo Objeto Feature.
+	 *
+	 * @param source parámetro source
+	 */
 	public Feature(Feature<T> source) {
 		this(source.tag);
 		
@@ -30,7 +37,7 @@ public class Feature<T extends Comparable<T>> extends ArrayList<T> {
 	}
 
 	/**
-	 * Obtiene el tag del feature
+	 * Obtiene el tag del feature.
 	 *
 	 * @return nombre del tag del feature
 	 */
@@ -38,19 +45,29 @@ public class Feature<T extends Comparable<T>> extends ArrayList<T> {
 		return tag;
 	}
 	
+	/**
+	 * min.
+	 *
+	 * @return valor de tipo T
+	 */
 	public T min() {
 		if (isEmpty()) return null;
 		return Collections.min(this);
 	}
 	
+	/**
+	 * max.
+	 *
+	 * @return valor de tipo T
+	 */
 	public T max() {
 		if (isEmpty()) return null;
 		return Collections.max(this);
 	}
 	
 	/**
-	 * Obtiene la distribución de valores para un Feature determinado
-	 * 
+	 * Obtiene la distribución de valores para un Feature determinado.
+	 *
 	 * @return mapa con la distribución
 	 */
 	public Map<T, Long> distribution() {
@@ -61,6 +78,11 @@ public class Feature<T extends Comparable<T>> extends ArrayList<T> {
 		return dist;
 	}
 	
+	/**
+	 * distributionPositions.
+	 *
+	 * @return valor de tipo TreeMap
+	 */
 	public TreeMap<T, List<Integer>> distributionPositions() {
 		TreeMap<T, List<Integer>> dist = new TreeMap<>();
 		

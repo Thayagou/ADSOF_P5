@@ -9,17 +9,40 @@ import java.util.Queue;
 import decisiontrees.DecisionTree;
 import visitorPattern.Visitor;
 
+/**
+ * Tipo: Class GraphvizVisualizer: Implementa Visitor pattern y permite imprimir en formato de GraphViz
+ * @author Tiago Oselka y Juan Ibáñez
+ */
 public class GraphvizVisualizer implements Visitor{
+	
+	/** Fichero en el que se almacenan los grafos */
 	private String file;
+	
+	/** Nombre del grafo a almacenar */
 	private String graphName;
 	
+	/** Campo OTHERWISE_LABEL. */
 	private static String OTHERWISE_LABEL = "Otherwise";
+	
+	/** Campo FOLDER: carpeta donde se almacenan relativamente al proyecto */
 	private static String FOLDER = "visualizations";
 	
+	/**
+	 * Instancia un nuevo Objeto GraphvizVisualizer.
+	 *
+	 * @param file parámetro file
+	 * @param graphName parámetro graphName
+	 */
 	public GraphvizVisualizer(String file, String graphName) {
 		this.file = FOLDER + "/" + file;
 		this.graphName = graphName;
 	}
+	
+	/**
+	 * Visita un árbol imprimiéndolo formateado en formato de GraphViz
+	 *
+	 * @param tree DecisionTree que se pretende visualizar
+	 */
 	@Override
 	public void visit(DecisionTree<?> tree) {
 		Queue<DecisionTree<?>> cola = new LinkedList<>();

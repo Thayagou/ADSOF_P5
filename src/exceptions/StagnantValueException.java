@@ -1,19 +1,19 @@
 package exceptions;
 
+/**
+ * Excepcion StagnantValueException: se lanza en caso de que el objeto introducido en el árbol no haya conseguido llegar a una hoja del árbol
+ */
 public class StagnantValueException extends Exception {
+	
+	/** Constante serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	private Object value;
-	
-	private static String DF_STAGNANT_MESSAGE = "El objeto no logró alcanzar una hoja del árbol: ";
-	
+	/**
+	 * Instancia un nuevo Objeto StagnantValueException.
+	 *
+	 * @param value Objeto que no logró llegar al final del árbol
+	 */
 	public StagnantValueException(Object value) {
-		super(DF_STAGNANT_MESSAGE);
-		this.value = value;
-	}
-	
-	@Override
-	public String getMessage() {
-		return super.getMessage() + value.toString();
+		super("El objeto no logró alcanzar una hoja del árbol: " + value.toString());
 	}
 }

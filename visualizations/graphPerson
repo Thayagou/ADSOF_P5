@@ -1,0 +1,18 @@
+digraph TestGraph{
+
+"Root\nSplit: gender" -> "FEMALE\nLeaf label: female"
+
+"Root\nSplit: gender" -> "MALE\nSplit: height"[label=Otherwise]
+
+"MALE\nSplit: height" -> "176.0\nSplit: age"
+
+"MALE\nSplit: height" -> "180.0\nLeaf label: old male"[label=Otherwise]
+
+"176.0\nSplit: age" -> "34\nLeaf label: young male"
+
+"176.0\nSplit: age" -> "35\nLeaf label: middle male"
+
+"176.0\nSplit: age" -> "44\nLeaf label: middle male"[label=Otherwise]
+
+}
+

@@ -1,7 +1,7 @@
 package features;
 
 /**
- * Tipo: Class Person.
+ * Tipo: Class Person: objeto que representa una persona
  */
 public class Person {
 	
@@ -82,6 +82,11 @@ public class Person {
 		return male;
 	}
 	
+	/**
+	 * To String de una persona
+	 *
+	 * @return valor de tipo String
+	 */
 	@Override
 	public String toString() {
 		return name + " " + age + " " + " " + weight + " " + height;

@@ -1,16 +1,18 @@
 package exceptions;
 
+// TODO: Auto-generated Javadoc
 /**
  * Tipo: Class NodeNotFoundException.
  */
 public class NodeNotFoundException extends Exception{
 	
+	/** Constante serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** Campo nodeName. Nombre del nodo no encontrado*/
 	private String nodeName;
 	
-	/** Mensaje que definimos como el predefinido de la excepción */
+	/** Mensaje que definimos como el predefinido de la excepción. */
 	private static String DF_NOT_FOUND_MESSAGE = "No se enconttró el nodo con nombre ";
 	
 	/**
@@ -26,8 +28,8 @@ public class NodeNotFoundException extends Exception{
 	
 	/**
 	 * Instancia un nuevo Objeto NodeNotFoundException.
-	 * 
-	 * @param nodeName
+	 *
+	 * @param nodeName parámetro nodeName
 	 */
 	public NodeNotFoundException(String nodeName) {
 		super(DF_NOT_FOUND_MESSAGE);

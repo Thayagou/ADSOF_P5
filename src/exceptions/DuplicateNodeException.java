@@ -1,16 +1,17 @@
 package exceptions;
 
 /**
- * Tipo: Class DuplicateNodeException.
+ * Excepcion DuplicateNodeException: se lanza en caso de que el nodo que se intenta introducir ya se encuentre en el árbol
  */
 public class DuplicateNodeException extends Exception{
 	
+	/** Constante serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** Campo duplicateName. */
+	/** Campo duplicateName, nombre duplicado */
 	private String duplicateName;
 	
-	/** Mensaje que definimos como el predefinido de la excepción */
+	/** Mensaje que definimos como el predefinido de la excepción. */
 	private static String DF_DUPLICATE_MESSAGE = "El siguiente nodo ya se encuentra en el árbol: ";
 	
 	/**
@@ -27,7 +28,7 @@ public class DuplicateNodeException extends Exception{
 	/**
 	 * Instancia un nuevo Objeto DuplicateNodeException.
 	 *
-	 * @param nodeName nombre del nodo duplicado
+	 * @param nodeName Nombre del nodo duplicado
 	 */
 	public DuplicateNodeException(String nodeName) {
 		super(DF_DUPLICATE_MESSAGE);
