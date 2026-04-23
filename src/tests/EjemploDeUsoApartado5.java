@@ -3,6 +3,7 @@ package tests;
 import dataset.LabeledDataset;
 import decisiontrees.DecisionTree;
 import decisiontrees.GreedyTreeLearner;
+import exceptions.InexistantFeatureException;
 import features.Person;
 import features.PersonFeaturizer;
 import labels.PersonLabelProvider;
@@ -12,7 +13,7 @@ import visualizers.GraphvizVisualizer;
 import visualizers.PlainTextVisualizer;
 
 public class EjemploDeUsoApartado5 {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InexistantFeatureException {
 		DecisionTree<Weather> trih = learnTree();
 		DecisionTree<Person> trihPerson = learnTreePerson();
 		
@@ -27,10 +28,11 @@ public class EjemploDeUsoApartado5 {
 		//System.out.println(trih.predict(buildDataSet()));
 	}
 	
-	public static DecisionTree<Weather> learnTree() {
+	public static DecisionTree<Weather> learnTree() throws InexistantFeatureException {
 		LabeledDataset<Weather, Boolean> dataSet = buildDataSet();
 		GreedyTreeLearner<Weather, Boolean> learner = new GreedyTreeLearner<>(new MetricaClasificacionErronea()); 
 		DecisionTree<Weather> tree = learner.learn(dataSet); 
+		
 		return tree;
 	}
 
@@ -47,7 +49,7 @@ public class EjemploDeUsoApartado5 {
 		return ds;
 	}
 	
-	public static DecisionTree<Person> learnTreePerson() {
+	public static DecisionTree<Person> learnTreePerson() throws InexistantFeatureException {
 		LabeledDataset<Person, String> dataSet = buildDataSetPerson();
 		GreedyTreeLearner<Person, String> learner = new GreedyTreeLearner<>(new MetricaClasificacionErronea()); 
 		DecisionTree<Person> tree = learner.learn(dataSet); 

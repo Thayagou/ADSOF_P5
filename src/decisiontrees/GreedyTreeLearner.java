@@ -1,6 +1,3 @@
-/*
- * 
- */
 package decisiontrees;
 
 import java.util.function.Predicate;
@@ -11,19 +8,37 @@ import exceptions.InexistantFeatureException;
 import features.*;
 import strategies.Strategy;
 
+/**
+ * Tipo: Class GreedyTreeLearner.
+ *
+ * @param <T> parámetro genérico que representa los objetos almacenados en el dataset
+ * @param <L> parámetro genérico que representa la clase de las labels asignadas de los objetos de tipo <T>
+ * 
+ * @author Tiago Oselka y Juan Ibáñez
+ */
 public class GreedyTreeLearner<T, L> {
-	private Strategy strategy;
-	private static int count = 0;
 	
+	/** Estrategia que se sigue para elegir el mejor Feature en cada paso del algoritmo */
+	private Strategy strategy;
+	
+	/** Contador para los nodos de un árbol para asignar siempre nombres únicos*/
+	private int count = 0;
+	
+	/**
+	 * Instancia un nuevo Objeto GreedyTreeLearner.
+	 *
+	 * @param strat parámetro strat
+	 */
 	public GreedyTreeLearner(Strategy strat) {
 		this.strategy = strat;
 	}
 	
 	
 
+	/*
 	// @SuppressWarnings("unchecked")
 	@SuppressWarnings("unchecked")
-	public <K extends Comparable<K>> void learnRec(LabeledDataset<T, L> dataset, DecisionTree<T> currNode) throws InexistantFeatureException {
+	private <K extends Comparable<? super K>> void learnRec(LabeledDataset<T, L> dataset, DecisionTree<T> currNode) throws InexistantFeatureException {
 		System.out.println(dataset);
 		//Misma etiqueta en todos
 		List<L> labels = dataset.getLabels();
@@ -49,10 +64,6 @@ public class GreedyTreeLearner<T, L> {
 			Predicate<T> childPredicate = null;
 			DecisionTree<T> child = null;
 			System.out.println(key);
-			/* Si el valor es el mayor se le asigna un otherwise para evitar stagnant values
-			 * Si es un valor intermedio, le asigna el intervalo (lowerBound - curKey]
-			 * Si es el menor se le asigna el rango menor que (-inf - curkey]
-			 */
 			if (dist.higherKey(key) == null) {
 				System.out.println("Entra " + key.toString());
 				currNode.otherwise((count++) + "- " + key.toString());
@@ -74,8 +85,18 @@ public class GreedyTreeLearner<T, L> {
 			
 			learnRec(subDataset, child);
 		}
-	}
+	}*/
 	
+	/**
+	 * Construye un árbol de decisión a partir de un dataset siguiendo un algoritmo greedy implementado en la verión recursiva
+	 *
+	 * @param <K> parámetro genérico comparable
+	 * @param dataset Dataset del cual se desea "aprender" y generar un árbol
+	 * @param predicate Predicado que se le va a asignar al nodo actual del árbol
+	 * @param name Nombre que se le va a asignar al nodo actual del árbol
+	 * @return Un DecisionTree resultante de las decisiones de la estrategia definida
+	 * @throws Se lanza en el caso de que la estrategia elegida devuelva algún feature que no sea válido
+	 */
 	@SuppressWarnings("unchecked")
 	public <K extends Comparable<? super K>> DecisionTree<T> learnRecV2(LabeledDataset<T, L> dataset, Predicate<T> predicate, String name) throws InexistantFeatureException {
 		System.out.println(dataset);
@@ -130,6 +151,13 @@ public class GreedyTreeLearner<T, L> {
 		return curr;
 	}
 
+	/**
+	 * Construye un árbol de decisión a partir de un dataset siguiendo un algoritmo greedy implementado en la verión recursiva
+	 *
+	 * @param dataset Dataset del cual se desea "aprender" y generar un árbol
+	 * @return Un DecisionTree resultante de las decisiones de la estrategia definida
+	 * @throws InexistantFeatureException Se lanza en el caso de que la estrategia elegida devuelva algún feature que no sea válido
+	 */
 	public DecisionTree<T> learn(LabeledDataset<T, L> dataset) throws InexistantFeatureException {
 		return learnRecV2(new LabeledDataset<T, L>(dataset), p->true, "Root");
 	}

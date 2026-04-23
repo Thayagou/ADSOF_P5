@@ -2,6 +2,7 @@ package exceptions;
 
 /**
  * Excepcion DuplicateNodeException: se lanza en caso de que el nodo que se intenta introducir ya se encuentre en el árbol
+ * @author Tiago Oselka y Juan Ibáñez
  */
 public class DuplicateNodeException extends Exception{
 	

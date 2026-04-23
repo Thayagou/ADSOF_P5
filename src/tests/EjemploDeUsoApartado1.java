@@ -3,12 +3,13 @@ package tests;
 import java.util.Collections;
 
 import dataset.Dataset;
+import exceptions.InexistantFeatureException;
 import features.Feature;
 import features.Person;
 import features.PersonFeaturizer;
 
 public class EjemploDeUsoApartado1 {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InexistantFeatureException {
 		Dataset<Person> dataSet = buildDataSet(); System.out.println("dataset: "+dataSet);
 		dataSet.removeDuplicates();
 		System.out.println("dataset w/o duplicates: "+dataSet);

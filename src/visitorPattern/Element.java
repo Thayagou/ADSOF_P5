@@ -2,13 +2,14 @@ package visitorPattern;
 
 /**
  * Tipo: Interface Element del patrón de diseño Visitor
+ * @author Tiago Oselka y Juan Ibáñez
  */
 public interface Element {
 	
 	/**
-	 * accept.
+	 * Acepta la visita de un Visitante
 	 *
-	 * @param visitor parámetro visitor
+	 * @param visitor Visitante actual
 	 */
 	public void accept(Visitor visitor);
 }

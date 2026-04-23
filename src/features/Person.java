@@ -2,6 +2,7 @@ package features;
 
 /**
  * Tipo: Class Person: objeto que representa una persona
+ * @author Tiago Oselka y Juan Ibáñez
  */
 public class Person {
 	

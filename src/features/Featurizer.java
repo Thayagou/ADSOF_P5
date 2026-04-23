@@ -6,6 +6,7 @@ import java.util.*;
  * Tipo: Interface Featurizer: permite extraer los datos que se deseen de un objeto
  *
  * @param <T> parámetro genérico
+ * @author Tiago Oselka y Juan Ibáñez
  */
 public interface Featurizer<T> {
 	

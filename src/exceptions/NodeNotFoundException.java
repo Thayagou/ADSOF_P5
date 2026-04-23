@@ -1,8 +1,8 @@
 package exceptions;
 
-// TODO: Auto-generated Javadoc
 /**
  * Tipo: Class NodeNotFoundException.
+ * @author Tiago Oselka y Juan Ibáñez
  */
 public class NodeNotFoundException extends Exception{
 	

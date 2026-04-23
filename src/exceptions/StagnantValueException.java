@@ -2,6 +2,7 @@ package exceptions;
 
 /**
  * Excepcion StagnantValueException: se lanza en caso de que el objeto introducido en el árbol no haya conseguido llegar a una hoja del árbol
+ * @author Tiago Oselka y Juan Ibáñez
  */
 public class StagnantValueException extends Exception {
 	

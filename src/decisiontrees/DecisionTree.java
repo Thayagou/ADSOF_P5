@@ -11,7 +11,8 @@ import java.util.*;
 
 /**
  * Tipo: Class DecisionTree: Árbol cuyos nodos contienen predicados que condicionan acceso y permiten exploración
- *
+ * 
+ * @author Tiago Oselka y Juan Ibáñez
  * @param <T> parámetro genérico
  */
 public class DecisionTree<T> implements Element{

@@ -4,9 +4,25 @@ import dataset.*;
 import features.*;
 import java.util.*;
 
+/**
+ * Tipo: Class MetricaClasificacionErronea.
+ * @author Tiago Oselka y Juan Ibáñez
+ */
 public class MetricaClasificacionErronea implements Strategy {
+	
+	/**
+	 * Instancia un nuevo Objeto MetricaClasificacionErronea.
+	 */
 	public MetricaClasificacionErronea() { }
 	
+	/**
+	 * Obtiene el mejor Feature siguiendo el criterio del enunciado
+	 *
+	 * @param <T> parámetro genérico del objeto almacenado en el dataset
+	 * @param <L> parámetro genérico del label que se les da a los objetos del dataset
+	 * @param dataset Dataset a partir del cual se obtiene el mejor Feature
+	 * @return tag del mejor feature
+	 */
 	@Override
 	public <T, L> String getBestFeature(LabeledDataset<T, L> dataset) {
 		List<Feature<?>> features = dataset.getTable();

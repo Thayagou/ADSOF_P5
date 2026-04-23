@@ -7,6 +7,7 @@ import java.util.*;
  * Tipo: Class Feature: almacena objetos de tipo <T> y contiene un tag identificador.
  *
  * @param <T> parámetro genérico del que esta compuesto el Feature
+ * @author Tiago Oselka y Juan Ibáñez
  */
 public class Feature<T extends Comparable<? super T>> extends ArrayList<T> {
 	

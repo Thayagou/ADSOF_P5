@@ -1,8 +1,8 @@
 package exceptions;
 
-// TODO: Auto-generated Javadoc
 /**
  * Se lanza en caso de que el feature buscado no exista.
+ * @author Tiago Oselka y Juan Ibáñez
  */
 public class InexistantFeatureException extends Exception{
 

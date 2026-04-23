@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * Tipo: Class PersonFeaturizer: Obtiene los features de un objeto Person
+ * @author Tiago Oselka y Juan Ibáñez
  */
 public class PersonFeaturizer implements Featurizer<Person>{
 	
