@@ -12,7 +12,7 @@ import strategies.Strategy;
  * Tipo: Class GreedyTreeLearner.
  *
  * @param <T> parámetro genérico que representa los objetos almacenados en el dataset
- * @param <L> parámetro genérico que representa la clase de las labels asignadas de los objetos de tipo <T>
+ * @param <L> parámetro genérico que representa la clase de las labels asignadas de los objetos de tipo T
  * 
  * @author Tiago Oselka y Juan Ibáñez
  */
@@ -95,7 +95,7 @@ public class GreedyTreeLearner<T, L> {
 	 * @param predicate Predicado que se le va a asignar al nodo actual del árbol
 	 * @param name Nombre que se le va a asignar al nodo actual del árbol
 	 * @return Un DecisionTree resultante de las decisiones de la estrategia definida
-	 * @throws Se lanza en el caso de que la estrategia elegida devuelva algún feature que no sea válido
+	 * @throws InexistantFeatureException Se lanza en el caso de que la estrategia elegida devuelva algún feature que no sea válido
 	 */
 	@SuppressWarnings("unchecked")
 	public <K extends Comparable<? super K>> DecisionTree<T> learnRecV2(LabeledDataset<T, L> dataset, Predicate<T> predicate, String name) throws InexistantFeatureException {

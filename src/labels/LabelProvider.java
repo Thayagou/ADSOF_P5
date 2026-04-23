@@ -1,7 +1,7 @@
 package labels;
 
 /**
- * Tipo: Interface LabelProvider: Asigna labels de tipo <L> a objetos de tipo <T>
+ * Tipo: Interface LabelProvider: Asigna labels de tipo L a objetos de tipo T
  *
  * @param <T> parámetro genérico que representa al tipo de objeto al que se le asigna la label
  * @param <L> parámetro genérico que representa a la clase de la label

@@ -22,6 +22,11 @@ public class PersonFeaturizer implements Featurizer<Person>{
 	private static final String GENDER_ST_TAG = "gender";
 
 	/**
+	 * Obtiene una instancia de PersonFeaturizer
+	 */
+	public PersonFeaturizer() {}
+	
+	/**
 	 * Obtiene la lista de Features.
 	 *
 	 * @return lista de Features de las personas

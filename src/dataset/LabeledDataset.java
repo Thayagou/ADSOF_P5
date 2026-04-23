@@ -45,7 +45,7 @@ public class LabeledDataset<T, L> extends Dataset<T> {
 	/**
 	 * Devuelve un subset del LabeledDataset a partir de una lista de indices.
 	 *
-	 * @param index Lista con los indices de los elementos que se incluiran
+	 * @param indexes Lista con los indices de los elementos que se incluiran
 	 * @return Nuevo dataset con los elementos que se indicaron
 	 */
 	public LabeledDataset<T, L> getLabeledSubset(List<Integer> indexes) {

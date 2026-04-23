@@ -11,7 +11,7 @@ import java.util.*;
 public interface Featurizer<T> {
 	
 	/**
-	 * Obtiene los features del tipo genérico <T>
+	 * Obtiene los features del tipo genérico T
 	 *
 	 * @return valor de Features
 	 */

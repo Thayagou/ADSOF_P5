@@ -9,6 +9,11 @@ import features.Person;
 public class PersonLabelProvider implements LabelProvider<Person, String>{
 
 	/**
+	 * Obtiene una instancia de PersonLabelProvider
+	 */
+	public PersonLabelProvider() { }
+	
+	/**
 	 * Obtiene la Label asignada a elem
 	 *
 	 * @param elem Objeto Person a asignar

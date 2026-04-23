@@ -18,6 +18,11 @@ public class WeatherFeaturizer implements Featurizer<Weather> {
 	private static final String TEMP_ST_TAG = "temperature";
 	
 	/**
+	 * Obtiene una instancia de WeatherFeaturizer
+	 */
+	public WeatherFeaturizer() {}
+	
+	/**
 	 * Obtiene FeatureList.
 	 *
 	 * @return valor de FeatureList

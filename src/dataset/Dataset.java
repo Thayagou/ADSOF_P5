@@ -189,7 +189,7 @@ public class Dataset<T> {
 	/**
 	 * Obtiene el feature con el tag especificado si existe.
 	 *
-	 * @param <V> valor genérico comparable
+	 * @param <K> valor genérico comparable
 	 * @param tag parámetro tag
 	 * @return feature con la tag
 	 * @throws InexistantFeatureException se lanza en caso de que el feature buscado no exista
@@ -206,6 +206,7 @@ public class Dataset<T> {
 	 * Elimina un feature del dataset a partir de su tag y lo devuelve
 	 *
 	 * @param tag parámetro tag
+	 * @param <K> Parámetro genérico comparable
 	 * @return Feature eliminado del Dataset
 	 * @throws InexistantFeatureException Se lanza en caso de que el feature a eliminar no exista
 	 */

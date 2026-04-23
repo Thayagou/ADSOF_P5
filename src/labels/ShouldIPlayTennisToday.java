@@ -12,6 +12,11 @@ import tests.WeatherCondition;
 public class ShouldIPlayTennisToday implements LabelProvider<Weather, Boolean>{
 
 	/**
+	 * Obtiene una instancia de ShouldIPlayTennisToday
+	 */
+	public ShouldIPlayTennisToday() {}
+	
+	/**
 	 * Obtiene la Label asignada a elem
 	 *
 	 * @param elem Objeto Weather a asignar

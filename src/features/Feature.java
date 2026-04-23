@@ -2,9 +2,8 @@ package features;
 
 import java.util.*;
 
-// TODO: Auto-generated Javadoc
 /**
- * Tipo: Class Feature: almacena objetos de tipo <T> y contiene un tag identificador.
+ * Tipo: Class Feature: almacena objetos de tipo T y contiene un tag identificador.
  *
  * @param <T> parámetro genérico del que esta compuesto el Feature
  * @author Tiago Oselka y Juan Ibáñez
